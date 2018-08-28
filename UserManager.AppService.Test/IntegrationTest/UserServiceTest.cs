@@ -16,40 +16,13 @@ using Xunit.Abstractions;
 
 namespace UserManager.AppService.Test.IntegrationTest
 {
-    public class UserServiceTest : BaseServiceTest
+    public class UserServiceTest : BaseServiceTest, IClassFixture<ServiceTestFixture>
     {
-        public UserServiceTest(ITestOutputHelper output) : base(output) { }
+        private readonly ServiceTestFixture fixture;
 
-        //generate a test user DTO
-        private UserDTO GetTestUser()
+        public UserServiceTest(ITestOutputHelper output, ServiceTestFixture fixture) : base(output)
         {
-            SeedData seedData = SeedData.Instance;
-            return new UserDTO()
-            {
-                FirstName = "first",
-                LastName = "last",
-                Organization = Mapper.Map(seedData.RosenOrg),
-                MainGroup = Mapper.Map(seedData.RosenTechGroup),
-                Groups = new[] { Mapper.Map(seedData.RosenTechGroup) },
-                MainRole = Mapper.Map(seedData.EngineerRole),
-                Roles = new[] { Mapper.Map(seedData.EngineerRole) },
-                Email = new Email
-                {
-                    Main = "main email",
-                    Emails = new[] { "main email", "not main email" }
-                },
-                Phone = new Phone
-                {
-                    Main = "main phone",
-                    Work = new[] { "main phone", "work phone 2" },
-                    Private = new[] { "private phone" }
-                },
-                Mobile = new Mobile
-                {
-                    Main = "mobile 1",
-                    Mobiles = new[] { "mobile 1", "mobile 2" }
-                }
-            };
+            this.fixture = fixture;
         }
 
         [Fact]
@@ -58,39 +31,54 @@ namespace UserManager.AppService.Test.IntegrationTest
             using (var context = InitDbContext("create_user"))
             {
                 var service = new UserService(context);
-                var userId = "test1";
 
                 //create a user and insert into db
-                UserDTO userDTO = GetTestUser();
-
-                _output.WriteLine(userId);
+                UserDTO userDTO = fixture.TestUserDTO;
 
                 try
                 {
-                    Assert.Equal(userId, service.Create(userDTO, userId));
+                    Assert.Equal(userDTO.Id, service.Create(userDTO, userDTO.Id));
                 }
                 catch (ArgumentException aex)
                 {
                     _output.WriteLine(aex.Message);
                 }
-
-                //confirm that user is saved correctly in the db
-                //and userDTO is generated correctly by UserService
-                //get inserted user from db
-                var usetDTOfromDb = service.GetUser(userId);
-                Assert.Equal(userId, usetDTOfromDb.Id);
-
-                //confirm that user's organization is saved correctly
-                Assert.Equal(userDTO.Organization.Id, usetDTOfromDb.Organization.Id);
-
-                //confirm that user's group is saved correctly
-                Assert.Equal(userDTO.MainGroup.Id, usetDTOfromDb.MainGroup.Id);
-                Assert.Equal(userDTO.Groups.Length, usetDTOfromDb.Groups.Length);
-
-                //confirm that user's role is saved correctly
-                Assert.Equal(userDTO.MainRole.Id, usetDTOfromDb.MainRole.Id);
-                Assert.Equal(userDTO.Roles.Length, usetDTOfromDb.Roles.Length);
             }
+        }
+
+        [Fact]
+        public void TestGetUser()
+        {
+            var service = fixture.service;
+
+            UserDTO userDTO = fixture.TestUserDTO;
+
+            //confirm that user is saved correctly in the db
+            //and userDTO is generated correctly by UserService
+            //get inserted user from db
+            var userDTOfromDb = service.GetUser(userDTO.Id);
+            Assert.Equal(userDTO.Id, userDTOfromDb.Id);
+            Assert.Equal(userDTO.FirstName, userDTOfromDb.FirstName);
+            Assert.Equal(userDTO.LastName, userDTOfromDb.LastName);
+
+            //confirm image is saved correctly
+            Assert.Equal(userDTO.ProfileImage, userDTOfromDb.ProfileImage);
+
+            //confirm that email,phone and mobile is saved correctly
+            Assert.Equal(userDTO.Email, userDTOfromDb.Email);
+            Assert.Equal(userDTO.Phone, userDTOfromDb.Phone);
+            Assert.Equal(userDTO.Mobile, userDTOfromDb.Mobile);
+
+            //confirm that user's organization is saved correctly
+            Assert.Equal(userDTO.Organization.Id, userDTOfromDb.Organization.Id);
+
+            //confirm that user's group is saved correctly
+            Assert.Equal(userDTO.MainGroup.Id, userDTOfromDb.MainGroup.Id);
+            Assert.Equal(userDTO.Groups.Length, userDTOfromDb.Groups.Length);
+
+            //confirm that user's role is saved correctly
+            Assert.Equal(userDTO.MainRole.Id, userDTOfromDb.MainRole.Id);
+            Assert.Equal(userDTO.Roles.Length, userDTOfromDb.Roles.Length);
         }
     }
 }

@@ -30,6 +30,7 @@ namespace UserManager.AppService.Services
                         Id = user.Id,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
+                        ProfileImage = user.ProfileImage,
                         Organization = Mapper.Map(user.Organization),
                         Email = JsonConvert.DeserializeObject<Email>(user.Email),
                         Phone = JsonConvert.DeserializeObject<Phone>(user.Phone),
@@ -99,6 +100,7 @@ namespace UserManager.AppService.Services
                     Id = usr.Id,
                     FirstName = usr.FirstName,
                     LastName = usr.LastName,
+                    ProfileImage = usr.ProfileImage,
                     Organization = Mapper.Map(usr.Organization),
                     Email = JsonConvert.DeserializeObject<Email>(usr.Email),
                     Phone = JsonConvert.DeserializeObject<Phone>(usr.Phone),
@@ -264,7 +266,32 @@ namespace UserManager.AppService.Services
 
         public bool Delete(string id)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var user = _context.Users.FirstOrDefault(usr => usr.Id.Equals(id));
+
+                if (user == null)
+                {
+                    return false;
+                }
+
+                var userGroups = _context.UserGroups.Where(usgr => usgr.UserId.Equals(id)).ToArray();
+                _context.UserGroups.RemoveRange(userGroups);
+
+                var userRoles = _context.UserRoles.Where(usrl => usrl.UserId.Equals(id)).ToArray();
+                _context.UserRoles.RemoveRange(userRoles);
+
+                _context.Users.Remove(user);
+
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                //todo logging
+                return false;
+            }
+
+            return true;
         }
     }
 }
