@@ -37,7 +37,7 @@ namespace UserManager.AppService.Services
                 :
                 from user in users
                 where
-                    $"{user.FirstName} {user.LastName}".Contains(querry.Name)
+                    user.Id.Contains(querry.Id)
                 select user
                 ;
         }
@@ -82,6 +82,7 @@ namespace UserManager.AppService.Services
                 .FilterByOrganizationId(querry)
                 .FilterByOrganizationName(querry)
                 .FilterByName(querry)
+                .FilterById(querry)
                 .MapToDTO().ResolveGroupAndRole(_context);
         }
     }

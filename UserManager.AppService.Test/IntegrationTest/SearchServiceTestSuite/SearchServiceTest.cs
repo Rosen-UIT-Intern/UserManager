@@ -26,6 +26,23 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         }
 
         [Fact]
+        public void TestSearchUserWithEmptyQuerry()
+        {
+            var service = fixture.service;
+
+            QuerryDTO querryDTO = new QuerryDTO();
+
+            var querryResult = service.Search(querryDTO);
+
+            foreach (var userDTO in querryResult)
+            {
+                _output.WriteLine($"{userDTO.FirstName} {userDTO.LastName}");
+            }
+
+            Assert.Equal(4, querryResult.Count());
+        }
+
+        [Fact]
         public void TestSearchUserByName()
         {
             var service = fixture.service;
@@ -43,6 +60,26 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             }
 
             Assert.Equal(2, querryResult.Count());
+        }
+
+        [Fact]
+        public void TestSearchUserById()
+        {
+            var service = fixture.service;
+
+            QuerryDTO querryDTO = new QuerryDTO()
+            {
+                Id = fixture.TestUser1.Id
+            };
+            _output.WriteLine(querryDTO.Id);
+            var querryResult = service.Search(querryDTO);
+            _output.WriteLine(querryResult.Count().ToString());
+            foreach (var userDTO in querryResult)
+            {
+                _output.WriteLine($"{userDTO.FirstName} {userDTO.LastName} {userDTO.Id}");
+            }
+
+            Assert.Single(querryResult);
         }
 
         [Fact]
@@ -69,7 +106,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             }
             #endregion
 
-            #region search by org name "Uit"
+            #region search by org name "UIT"
             {
                 QuerryDTO querryDTO = new QuerryDTO()
                 {
@@ -79,6 +116,50 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                 var querryResult = service.Search(querryDTO);
 
                 _output.WriteLine("search by organization name: {0}", querryDTO.OrganizationName);
+                foreach (var userDTO in querryResult)
+                {
+                    _output.WriteLine($"{userDTO.FirstName} {userDTO.LastName}");
+                }
+
+                Assert.Single(querryResult);
+            }
+            #endregion
+        }
+
+        [Fact]
+        public void TestSearchUserByOrganizationId()
+        {
+            var service = fixture.service;
+
+            #region search by org name "Rosen"
+            {
+                QuerryDTO querryDTO = new QuerryDTO()
+                {
+                    OrganizationId = SeedData.Instance.RosenOrg.Id.ToString()
+                };
+
+                var querryResult = service.Search(querryDTO);
+
+                _output.WriteLine("search by organization Id: {0}", querryDTO.OrganizationId);
+                foreach (var userDTO in querryResult)
+                {
+                    _output.WriteLine($"{userDTO.FirstName} {userDTO.LastName}");
+                }
+
+                Assert.Equal(3, querryResult.Count());
+            }
+            #endregion
+
+            #region search by org name "UIT"
+            {
+                QuerryDTO querryDTO = new QuerryDTO()
+                {
+                    OrganizationId = SeedData.Instance.UITOrg.Id.ToString()
+                };
+
+                var querryResult = service.Search(querryDTO);
+
+                _output.WriteLine("search by organization Id: {0}", querryDTO.OrganizationId);
                 foreach (var userDTO in querryResult)
                 {
                     _output.WriteLine($"{userDTO.FirstName} {userDTO.LastName}");
