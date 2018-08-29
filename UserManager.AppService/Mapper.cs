@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Newtonsoft.Json;
+
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
 
@@ -7,6 +9,21 @@ namespace UserManager.AppService.Utility
 {
     public class Mapper
     {
+        public static UserDTO MapLight(User user)
+        {
+            return new UserDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfileImage = user.ProfileImage,
+                Organization = Mapper.Map(user.Organization),
+                Email = JsonConvert.DeserializeObject<Email>(user.Email),
+                Phone = JsonConvert.DeserializeObject<Phone>(user.Phone),
+                Mobile = JsonConvert.DeserializeObject<Mobile>(user.Mobile)
+            };
+        }
+
         public static GroupDTO Map(Group group)
         {
             return new GroupDTO()

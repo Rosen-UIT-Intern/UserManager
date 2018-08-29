@@ -12,15 +12,15 @@ using UserManager.AppService.Services;
 using UserManager.Contract.DTOs;
 using UserManager.AppService.Utility;
 
-namespace UserManager.AppService.Test.IntegrationTest
+namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
 {
-    public class ServiceTestFixture : IDisposable
+    public class UserServiceTestFixture : IDisposable
     {
         private readonly UserDbContext context;
         public readonly UserService service;
         public readonly UserDTO TestUserDTO;
 
-        public ServiceTestFixture()
+        public UserServiceTestFixture()
         {
             var option = new DbContextOptionsBuilder<UserDbContext>()
                         .UseInMemoryDatabase(databaseName: "test_database")
