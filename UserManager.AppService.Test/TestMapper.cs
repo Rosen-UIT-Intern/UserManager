@@ -13,6 +13,22 @@ namespace UserManager.AppService.Test
     public class TestMapper
     {
         [Fact]
+        public void TestFromUserToLightUserDTO()
+        {
+            var testUser = SeedData.Instance.User;
+            testUser.Organization = SeedData.Instance.RosenOrg;
+
+            var testUserDTO = Mapper.MapLight(testUser);
+
+            Assert.Equal(testUser.Id, testUserDTO.Id);
+            Assert.Equal(testUser.FirstName, testUserDTO.FirstName);
+            Assert.Equal(testUser.LastName, testUserDTO.LastName);
+            Assert.Equal(testUser.ProfileImage, testUserDTO.ProfileImage);
+
+            Assert.Equal(testUser.OrganizationId.ToString(), testUserDTO.Organization.Id);
+        }
+
+        [Fact]
         public void TestFromGroupToGroupDTO()
         {
             var groupId = Guid.NewGuid();
