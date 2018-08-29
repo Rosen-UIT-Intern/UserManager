@@ -19,6 +19,8 @@ namespace UserManager.AppService
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IRoleService, RoleService>();
 
+            services.AddTransient<ISearchService, SearchService>();
+
             services.AddSingleton<IRandomIdGenerator, RandomIdGenerator>();
 
             return services;

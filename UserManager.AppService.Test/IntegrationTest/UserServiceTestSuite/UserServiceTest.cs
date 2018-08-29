@@ -6,21 +6,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 using Xunit;
+using Xunit.Abstractions;
 
 using UserManager.AppService;
 using UserManager.AppService.Services;
 using UserManager.AppService.Utility;
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
-using Xunit.Abstractions;
 
-namespace UserManager.AppService.Test.IntegrationTest
+namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
 {
-    public class UserServiceTest : BaseServiceTest, IClassFixture<ServiceTestFixture>
+    public class UserServiceTest : BaseServiceTest, IClassFixture<UserServiceTestFixture>
     {
-        private readonly ServiceTestFixture fixture;
+        private readonly UserServiceTestFixture fixture;
 
-        public UserServiceTest(ITestOutputHelper output, ServiceTestFixture fixture) : base(output)
+        public UserServiceTest(ITestOutputHelper output, UserServiceTestFixture fixture) : base(output)
         {
             this.fixture = fixture;
         }

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 using Microsoft.EntityFrameworkCore;
 
+using Newtonsoft.Json;
+
 using UserManager.Contract;
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
-using Newtonsoft.Json;
 using UserManager.AppService.Utility;
 
 namespace UserManager.AppService.Services
@@ -23,71 +24,12 @@ namespace UserManager.AppService.Services
 
         public ICollection<UserDTO> GetUsers()
         {
-            var users = _context.Users
-                .Select((user) =>
-                    new UserDTO
-                    {
-                        Id = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        ProfileImage = user.ProfileImage,
-                        Organization = Mapper.Map(user.Organization),
-                        Email = JsonConvert.DeserializeObject<Email>(user.Email),
-                        Phone = JsonConvert.DeserializeObject<Phone>(user.Phone),
-                        Mobile = JsonConvert.DeserializeObject<Mobile>(user.Mobile)
-                    }
-                )
-                .ToList()
-                ;
-
-            users = users.ConvertAll(user =>
-            {
-                var groups =
-                    from gr in _context.Groups.Include(g => g.Organization)
-                    join usgr in _context.UserGroups on gr.Id equals usgr.GroupId
-                    where usgr.UserId.Equals(user.Id)
-                    select new { Group = gr, isMain = usgr.IsMain };
-
-                user.Groups = groups.Select(group => Mapper.Map(group.Group)).ToArray();
-
-                var mainGroup = groups.First(g => g.isMain).Group;
-                user.MainGroup = Mapper.Map(mainGroup);
-
-                var roles =
-                    from role in _context.Roles
-                    join usrl in _context.UserRoles on role.Id equals usrl.RoleId
-                    where usrl.UserId.Equals(user.Id)
-                    select new { role, isMain = usrl.IsMain };
-
-                user.Roles = roles.Select(role => Mapper.Map(role.role)).ToArray();
-
-                var mainRole = roles.First(r => r.isMain).role;
-                user.MainRole = Mapper.Map(mainRole);
-
-                return user;
-            });
-
-            return users;
+            return _context.Users.MapToDTO().ResolveGroupAndRole(_context).ToList();
         }
 
         public ICollection<UserDTO> GetLightUsers()
         {
-            return
-            _context.Users
-                .Select((user) =>
-                    new UserDTO
-                    {
-                        Id = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Organization = Mapper.Map(user.Organization),
-                        Email = JsonConvert.DeserializeObject<Email>(user.Email),
-                        Phone = JsonConvert.DeserializeObject<Phone>(user.Phone),
-                        Mobile = JsonConvert.DeserializeObject<Mobile>(user.Mobile)
-                    }
-                )
-                .ToList()
-                ;
+            return _context.Users.MapToDTO().ToList();
         }
 
         public UserDTO GetUser(string id)
