@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\UserManager.Startup\appsettings.json" Link="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
@@ -19,6 +26,8 @@
     <ProjectReference Include="..\UserManager.AppService\UserManager.AppService.csproj" />
     <ProjectReference Include="..\UserManager.Contract\UserManager.Contract.csproj" />
     <ProjectReference Include="..\UserManager.Dal\UserManager.Dal.csproj" />
+    <ProjectReference Include="..\UserManager.Startup\UserManager.Startup.csproj" />
+    <ProjectReference Include="..\UserManager.WebApi\UserManager.WebApi.csproj" />
   </ItemGroup>
 
 </Project>
