@@ -92,9 +92,11 @@ namespace UserManager.Dal.Migrations
 
                     b.Property<Guid>("OrganizationId");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("PrivatePhone");
 
                     b.Property<string>("ProfileImage");
+
+                    b.Property<string>("WorkPhone");
 
                     b.HasKey("Id");
 
@@ -103,7 +105,7 @@ namespace UserManager.Dal.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = "12345", Email = "{\"main\": \"em@email.com\",\"emails\": [\"em@email.com\",\"em@yahoo.com\"]}", FirstName = "Minh", LastName = "Nguyen Le", Mobile = "{\"main\": \"333444\",\"mobiles\": [\"333444\",\"555666\"]}", OrganizationId = new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), Phone = "{\"main\": \"1234\",\"work\": [\"1234\",\"5678\"], \"private\": [\"91011\"]}", ProfileImage = "image" }
+                        new { Id = "12345", Email = "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]", FirstName = "Minh", LastName = "Nguyen Le", Mobile = "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]", OrganizationId = new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), PrivatePhone = "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]", ProfileImage = "image", WorkPhone = "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]" }
                     );
                 });
 

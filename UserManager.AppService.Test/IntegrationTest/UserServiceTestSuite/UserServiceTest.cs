@@ -26,6 +26,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestCreateUser()
         {
             using (var context = InitDbContext("create_user"))
@@ -47,6 +48,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestGetUser()
         {
             var service = fixture.service;
@@ -66,7 +68,8 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
 
             //confirm that email,phone and mobile is saved correctly
             Assert.Equal(userDTO.Email, userDTOfromDb.Email);
-            Assert.Equal(userDTO.Phone, userDTOfromDb.Phone);
+            Assert.Equal(userDTO.WorkPhone, userDTOfromDb.WorkPhone);
+            Assert.Equal(userDTO.PrivatePhone, userDTOfromDb.PrivatePhone);
             Assert.Equal(userDTO.Mobile, userDTOfromDb.Mobile);
 
             //confirm that user's organization is saved correctly

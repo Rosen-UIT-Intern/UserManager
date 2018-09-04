@@ -24,12 +24,12 @@ namespace UserManager.AppService.Services
 
         public ICollection<UserDTO> GetUsers()
         {
-            return _context.Users.MapToDTO().ResolveGroupAndRole(_context).ToList();
+            return _context.Users.Include(u => u.Organization).MapToDTO().ResolveGroupAndRole(_context).ToList();
         }
 
         public ICollection<UserDTO> GetLightUsers()
         {
-            return _context.Users.MapToDTO().ToList();
+            return _context.Users.Include(u => u.Organization).MapToDTO().ToList();
         }
 
         public UserDTO GetUser(string id)
@@ -44,9 +44,10 @@ namespace UserManager.AppService.Services
                     LastName = usr.LastName,
                     ProfileImage = usr.ProfileImage,
                     Organization = Mapper.Map(usr.Organization),
-                    Email = JsonConvert.DeserializeObject<Email>(usr.Email),
-                    Phone = JsonConvert.DeserializeObject<Phone>(usr.Phone),
-                    Mobile = JsonConvert.DeserializeObject<Mobile>(usr.Mobile)
+                    Email = JsonConvert.DeserializeObject<Email[]>(usr.Email),
+                    WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone),
+                    PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone),
+                    Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile)
                 }
                 )
                 .ToList()
@@ -97,9 +98,10 @@ namespace UserManager.AppService.Services
                     FirstName = usr.FirstName,
                     LastName = usr.LastName,
                     Organization = Mapper.Map(usr.Organization),
-                    Email = JsonConvert.DeserializeObject<Email>(usr.Email),
-                    Phone = JsonConvert.DeserializeObject<Phone>(usr.Phone),
-                    Mobile = JsonConvert.DeserializeObject<Mobile>(usr.Mobile)
+                    Email = JsonConvert.DeserializeObject<Email[]>(usr.Email),
+                    WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone),
+                    PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone),
+                    Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile)
                 }
                 )
                 .ToList()
@@ -188,7 +190,8 @@ namespace UserManager.AppService.Services
                 OrganizationId = org.Id,
 
                 Email = JsonConvert.SerializeObject(dto.Email),
-                Phone = JsonConvert.SerializeObject(dto.Phone),
+                WorkPhone = JsonConvert.SerializeObject(dto.WorkPhone),
+                PrivatePhone = JsonConvert.SerializeObject(dto.PrivatePhone),
                 Mobile = JsonConvert.SerializeObject(dto.Mobile),
             };
 

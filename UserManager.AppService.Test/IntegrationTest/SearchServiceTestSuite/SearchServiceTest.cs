@@ -26,6 +26,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestSearchUserWithEmptyQuerry()
         {
             var service = fixture.service;
@@ -43,6 +44,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestSearchUserByName()
         {
             var service = fixture.service;
@@ -63,6 +65,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestSearchUserById()
         {
             var service = fixture.service;
@@ -83,6 +86,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestSearchUserByOrganizationName()
         {
             var service = fixture.service;
@@ -127,6 +131,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestSearchUserByOrganizationId()
         {
             var service = fixture.service;

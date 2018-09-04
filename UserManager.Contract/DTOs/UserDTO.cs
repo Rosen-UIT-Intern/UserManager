@@ -8,9 +8,10 @@
         public string LastName { get; set; }
         public string ProfileImage { get; set; }
 
-        public Email Email { get; set; }
-        public Phone Phone { get; set; }
-        public Mobile Mobile { get; set; }
+        public Email[] Email { get; set; }
+        public Phone[] WorkPhone { get; set; }
+        public Phone[] PrivatePhone { get; set; }
+        public Mobile[] Mobile { get; set; }
 
         public OrganizationDTO Organization { get; set; }
 
@@ -23,8 +24,8 @@
 
     public class Email
     {
-        public string Main { get; set; }
-        public string[] Emails { get; set; }
+        public string Address { get; set; }
+        public bool IsMain { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -37,11 +38,8 @@
             {
                 int hash = 97;
 
-                hash = hash * 89 + Main.GetHashCode();
-                foreach (var email in Emails)
-                {
-                    hash = hash * 89 + email.GetHashCode();
-                }
+                hash = hash * 89 + Address.GetHashCode();
+                hash = hash * 89 + IsMain.GetHashCode();
 
                 return hash;
             }
@@ -50,9 +48,8 @@
 
     public class Phone
     {
-        public string Main { get; set; }
-        public string[] Work { get; set; }
-        public string[] Private { get; set; }
+        public string Number { get; set; }
+        public bool IsMain { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -65,15 +62,8 @@
             {
                 int hash = 97;
 
-                hash = hash * 89 + Main.GetHashCode();
-                foreach (var phone in Work)
-                {
-                    hash = hash * 89 + phone.GetHashCode();
-                }
-                foreach (var phone in Private)
-                {
-                    hash = hash * 89 + phone.GetHashCode();
-                }
+                hash = hash * 89 + Number.GetHashCode();
+                hash = hash * 89 + IsMain.GetHashCode();
 
                 return hash;
             }
@@ -82,8 +72,8 @@
 
     public class Mobile
     {
-        public string Main { get; set; }
-        public string[] Mobiles { get; set; }
+        public string Number { get; set; }
+        public bool IsMain { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -96,11 +86,8 @@
             {
                 int hash = 97;
 
-                hash = hash * 89 + Main.GetHashCode();
-                foreach (var mobile in Mobiles)
-                {
-                    hash = hash * 89 + mobile.GetHashCode();
-                }
+                hash = hash * 89 + Number.GetHashCode();
+                hash = hash * 89 + IsMain.GetHashCode();
 
                 return hash;
             }

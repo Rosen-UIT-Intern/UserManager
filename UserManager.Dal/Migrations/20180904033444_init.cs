@@ -87,7 +87,8 @@ namespace UserManager.Dal.Migrations
                     LastName = table.Column<string>(nullable: true),
                     ProfileImage = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
+                    WorkPhone = table.Column<string>(nullable: true),
+                    PrivatePhone = table.Column<string>(nullable: true),
                     Mobile = table.Column<string>(nullable: true),
                     OrganizationId = table.Column<Guid>(nullable: false)
                 },
@@ -148,8 +149,8 @@ namespace UserManager.Dal.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Email", "FirstName", "LastName", "Mobile", "OrganizationId", "Phone", "ProfileImage" },
-                values: new object[] { "12345", "{\"main\": \"em@email.com\",\"emails\": [\"em@email.com\",\"em@yahoo.com\"]}", "Minh", "Nguyen Le", "{\"main\": \"333444\",\"mobiles\": [\"333444\",\"555666\"]}", new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), "{\"main\": \"1234\",\"work\": [\"1234\",\"5678\"], \"private\": [\"91011\"]}", "image" });
+                columns: new[] { "Id", "Email", "FirstName", "LastName", "Mobile", "OrganizationId", "PrivatePhone", "ProfileImage", "WorkPhone" },
+                values: new object[] { "12345", "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]", "Minh", "Nguyen Le", "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]", new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]", "image", "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_OrganizationId",

@@ -57,21 +57,25 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 Groups = new[] { Mapper.Map(seedData.RosenTechGroup) },
                 MainRole = Mapper.Map(seedData.EngineerRole),
                 Roles = new[] { Mapper.Map(seedData.EngineerRole) },
-                Email = new Email
+                Email = new Email[]
                 {
-                    Main = "main email",
-                    Emails = new[] { "main email", "not main email" }
+                    new Email{ Address="main email", IsMain=true },
+                    new Email{ Address="not main email", IsMain=false },
                 },
-                Phone = new Phone
+                WorkPhone = new Phone[]
                 {
-                    Main = "main phone",
-                    Work = new[] { "main phone", "work phone 2" },
-                    Private = new[] { "private phone" }
+                    new Phone{ Number = "main work phone", IsMain = true},
+                    new Phone{ Number = "not main work phone", IsMain = false},
                 },
-                Mobile = new Mobile
+                PrivatePhone = new Phone[]
                 {
-                    Main = "mobile 1",
-                    Mobiles = new[] { "mobile 1", "mobile 2" }
+                    new Phone{ Number = "private phone", IsMain = false},
+                    new Phone{ Number = "private phone 2", IsMain = false},
+                },
+                Mobile = new Mobile[]
+                {
+                    new Mobile{ Number = "main mobile",IsMain = true},
+                    new Mobile{ Number = "not main mobile",IsMain = false},
                 }
             };
         }

@@ -90,9 +90,10 @@ namespace UserManager.Dal
                 LastName = "Nguyen Le",
                 OrganizationId = RosenOrg.Id,
                 ProfileImage = "image",
-                Email = "{\"main\": \"em@email.com\",\"emails\": [\"em@email.com\",\"em@yahoo.com\"]}",
-                Phone = "{\"main\": \"1234\",\"work\": [\"1234\",\"5678\"], \"private\": [\"91011\"]}",
-                Mobile = "{\"main\": \"333444\",\"mobiles\": [\"333444\",\"555666\"]}"
+                Email = "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]",
+                WorkPhone = "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]",
+                PrivatePhone = "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]",
+                Mobile = "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]"
             };
 
             UserGroups = new UserGroup[]

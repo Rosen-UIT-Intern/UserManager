@@ -43,6 +43,7 @@ namespace UserManager.AppService.Test.E2ETest
         }
 
         [Fact]
+        [Trait("Category", "E2E")]
         public void TestGetRole()
         {
             using (HttpClient client = new HttpClient())

@@ -13,6 +13,7 @@ namespace UserManager.AppService.Test
     public class TestMapper
     {
         [Fact]
+        [Trait("Category", "Unit")]
         public void TestFromUserToLightUserDTO()
         {
             var testUser = SeedData.Instance.User;
@@ -29,6 +30,7 @@ namespace UserManager.AppService.Test
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TestFromGroupToGroupDTO()
         {
             var groupId = Guid.NewGuid();
@@ -45,6 +47,7 @@ namespace UserManager.AppService.Test
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TestFromGroupDTOToGroup()
         {
             var groupId = Guid.NewGuid();
@@ -63,6 +66,7 @@ namespace UserManager.AppService.Test
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TestFromOrganizationToOrganizationDTO()
         {
             var orgId = Guid.NewGuid();
@@ -81,6 +85,7 @@ namespace UserManager.AppService.Test
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TestFromOrganizationDTOToOrganization()
         {
             var orgId = Guid.NewGuid();
@@ -99,6 +104,7 @@ namespace UserManager.AppService.Test
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TestFromRoleToRoleDTO()
         {
             var roleId = Guid.NewGuid();
@@ -117,6 +123,7 @@ namespace UserManager.AppService.Test
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TestFromRoleDTOToRole()
         {
             var roleId = Guid.NewGuid();

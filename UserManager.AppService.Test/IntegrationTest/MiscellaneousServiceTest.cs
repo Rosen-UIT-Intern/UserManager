@@ -23,6 +23,7 @@ namespace UserManager.AppService.Test.IntegrationTest
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestGetAllRole()
         {
             using (var context = InitDbContext("get_all_roles"))
@@ -36,6 +37,7 @@ namespace UserManager.AppService.Test.IntegrationTest
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public void TestGetOneRole()
         {
             using (var context = InitDbContext("get_one_role"))

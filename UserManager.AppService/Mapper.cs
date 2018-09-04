@@ -18,9 +18,10 @@ namespace UserManager.AppService.Utility
                 LastName = user.LastName,
                 ProfileImage = user.ProfileImage,
                 Organization = Mapper.Map(user.Organization),
-                Email = JsonConvert.DeserializeObject<Email>(user.Email),
-                Phone = JsonConvert.DeserializeObject<Phone>(user.Phone),
-                Mobile = JsonConvert.DeserializeObject<Mobile>(user.Mobile)
+                Email = JsonConvert.DeserializeObject<Email[]>(user.Email),
+                WorkPhone = JsonConvert.DeserializeObject<Phone[]>(user.WorkPhone),
+                PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(user.PrivatePhone),
+                Mobile = JsonConvert.DeserializeObject<Mobile[]>(user.Mobile)
             };
         }
 
