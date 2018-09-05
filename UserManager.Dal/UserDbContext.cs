@@ -41,6 +41,30 @@ namespace UserManager.Dal
         /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserRole>()
+                .HasKey(usrl => new { usrl.UserId, usrl.RoleId });
+            modelBuilder.Entity<UserRole>()
+                .HasOne(usrl => usrl.User)
+                .WithMany(us => us.UserRoles)
+                .HasForeignKey(usrl => usrl.UserId);
+            modelBuilder.Entity<UserRole>()
+                .HasOne(usrl => usrl.Role)
+                .WithMany(rl => rl.UserRoles)
+                .HasForeignKey(usrl => usrl.RoleId);
+
+            modelBuilder.Entity<UserGroup>()
+                .HasKey(usgr => new { usgr.UserId, usgr.GroupId });
+            modelBuilder.Entity<UserGroup>()
+                .HasOne(usgr => usgr.User)
+                .WithMany(us => us.UserGroups)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(usgr => usgr.UserId);
+            modelBuilder.Entity<UserGroup>()
+                .HasOne(usgr => usgr.Group)
+                .WithMany(gr => gr.UserGroups)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(usgr => usgr.GroupId);
+
             var seedData = SeedData.Instance;
             Organization[] organizations = new Organization[]
             {

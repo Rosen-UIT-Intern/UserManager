@@ -10,7 +10,7 @@ using UserManager.Dal;
 namespace UserManager.Dal.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20180904033444_init")]
+    [Migration("20180905070108_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,21 +84,27 @@ namespace UserManager.Dal.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
-                    b.Property<string>("Mobile");
+                    b.Property<string>("Mobile")
+                        .IsRequired();
 
                     b.Property<Guid>("OrganizationId");
 
-                    b.Property<string>("PrivatePhone");
+                    b.Property<string>("PrivatePhone")
+                        .IsRequired();
 
                     b.Property<string>("ProfileImage");
 
-                    b.Property<string>("WorkPhone");
+                    b.Property<string>("WorkPhone")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -113,42 +119,40 @@ namespace UserManager.Dal.Migrations
 
             modelBuilder.Entity("UserManager.Dal.UserGroup", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("UserId");
 
                     b.Property<Guid>("GroupId");
 
                     b.Property<bool>("IsMain");
 
-                    b.Property<string>("UserId");
+                    b.HasKey("UserId", "GroupId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("UserGroups");
 
                     b.HasData(
-                        new { Id = new Guid("540ab5fc-4615-4cde-a284-cc9d9698a238"), GroupId = new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), IsMain = true, UserId = "12345" },
-                        new { Id = new Guid("a2bc5162-d036-436e-9ac2-ab4571ec0694"), GroupId = new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), IsMain = false, UserId = "12345" }
+                        new { UserId = "12345", GroupId = new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), IsMain = true },
+                        new { UserId = "12345", GroupId = new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), IsMain = false }
                     );
                 });
 
             modelBuilder.Entity("UserManager.Dal.UserRole", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsMain");
+                    b.Property<string>("UserId");
 
                     b.Property<Guid>("RoleId");
 
-                    b.Property<string>("UserId");
+                    b.Property<bool>("IsMain");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles");
 
                     b.HasData(
-                        new { Id = new Guid("d0bd5e70-f6b3-4671-b587-0a87995daf84"), IsMain = true, RoleId = new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), UserId = "12345" }
+                        new { UserId = "12345", RoleId = new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), IsMain = true }
                     );
                 });
 
@@ -165,6 +169,32 @@ namespace UserManager.Dal.Migrations
                     b.HasOne("UserManager.Dal.Organization", "Organization")
                         .WithMany()
                         .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("UserManager.Dal.UserGroup", b =>
+                {
+                    b.HasOne("UserManager.Dal.Group", "Group")
+                        .WithMany("UserGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UserManager.Dal.User", "User")
+                        .WithMany("UserGroups")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("UserManager.Dal.UserRole", b =>
+                {
+                    b.HasOne("UserManager.Dal.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UserManager.Dal.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -9,5 +9,6 @@ namespace UserManager.Contract
     {
         IEnumerable<RoleDTO> GetRoles();
         RoleDTO GetRole(Guid id);
+        IEnumerable<UserDTO> GetUsers(Guid roleId);
     }
 }

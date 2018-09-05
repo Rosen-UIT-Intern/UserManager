@@ -158,7 +158,6 @@ namespace UserManager.AppService.Services
                 where dto.Groups.FirstOrDefault(gDto => gDto.Id.Equals(gr.Id.ToString())) != null
                 select new UserGroup()
                 {
-                    Id = Guid.NewGuid(),
                     GroupId = gr.Id,
                     UserId = id,
                     IsMain = dto.MainGroup.Id.Equals(gr.Id.ToString())
@@ -171,7 +170,6 @@ namespace UserManager.AppService.Services
                 where dto.Roles.FirstOrDefault(rDto => rDto.Id.Equals(rl.Id.ToString())) != null
                 select new UserRole()
                 {
-                    Id = Guid.NewGuid(),
                     RoleId = rl.Id,
                     UserId = id,
                     IsMain = dto.MainRole.Id.Equals(rl.Id.ToString())
