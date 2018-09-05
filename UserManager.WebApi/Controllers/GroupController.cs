@@ -52,5 +52,16 @@ namespace UserManager.WebApi.Controllers
 
             return Json(_service.GetAllGroupBelongToOrganization(orgId));
         }
+
+        [HttpGet("user/{id}")]
+        public IActionResult GetUserBelongToGroup(string id)
+        {
+            if (!Guid.TryParse(id, out Guid grpId))
+            {
+                return BadRequest(id);
+            }
+
+            return Json(_service.GetUsers(grpId));
+        }
     }
 }

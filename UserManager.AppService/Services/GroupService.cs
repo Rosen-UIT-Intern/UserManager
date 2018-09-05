@@ -6,6 +6,7 @@ using UserManager.Contract;
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
 using UserManager.AppService.Utility;
+using Microsoft.EntityFrameworkCore;
 
 namespace UserManager.AppService.Services
 {
@@ -42,6 +43,29 @@ namespace UserManager.AppService.Services
             }
 
             return Mapper.Map(group);
+        }
+
+        public IEnumerable<UserDTO> GetUsers(Guid groupId)
+        {
+            var groups = _context.Groups
+                .Include(grps => grps.UserGroups)
+                    .ThenInclude(usgr => usgr.User)
+                    .ThenInclude(usr => usr.Organization)
+                .Include(grps => grps.UserGroups)
+                    .ThenInclude(usgr => usgr.User)
+                    .ThenInclude(usr => usr.UserRoles)
+                    .ThenInclude(usrl => usrl.Role)
+                .FirstOrDefault(gr => gr.Id.Equals(groupId));
+
+            if (groups == null)
+            {
+                return null;
+            }
+
+            return groups.UserGroups.Select(usgr => usgr.User)
+                    .Select(user => Mapper.Map(user))
+                    //.MapToDTO().ResolveGroupAndRole(_context)
+                    ;
         }
     }
 }

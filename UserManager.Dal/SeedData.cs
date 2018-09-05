@@ -100,14 +100,12 @@ namespace UserManager.Dal
             {
                 new UserGroup()
                 {
-                     Id = Guid.Parse("540ab5fc-4615-4cde-a284-cc9d9698a238"),
                       UserId = User.Id,
                       GroupId = RosenTechGroup.Id,
                       IsMain = true
                 },
                 new UserGroup()
                 {
-                    Id = Guid.Parse("a2bc5162-d036-436e-9ac2-ab4571ec0694"),
                     UserId = User.Id,
                     GroupId = RosenHRGroup.Id,
                     IsMain = false
@@ -117,7 +115,6 @@ namespace UserManager.Dal
             {
                 new UserRole()
                 {
-                    Id = Guid.Parse("d0bd5e70-f6b3-4671-b587-0a87995daf84"),
                     UserId = User.Id,
                     RoleId=EngineerRole.Id,
                     IsMain = true

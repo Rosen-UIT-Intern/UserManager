@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.EntityFrameworkCore;
+
 using UserManager.Contract;
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
@@ -33,6 +35,29 @@ namespace UserManager.AppService.Services
         public IEnumerable<RoleDTO> GetRoles()
         {
             return _context.Roles.Select(r => Mapper.Map(r));
+        }
+
+        public IEnumerable<UserDTO> GetUsers(Guid roleId)
+        {
+            var role = _context.Roles
+                .Include(r => r.UserRoles)
+                    .ThenInclude(x => x.User)
+                    .ThenInclude(x => x.Organization)
+                .Include(r => r.UserRoles)
+                    .ThenInclude(usrl => usrl.User)
+                    .ThenInclude(usr => usr.UserGroups)
+                    .ThenInclude(usgr => usgr.Group)
+                .FirstOrDefault(r => r.Id.Equals(roleId));
+
+            if (role == null)
+            {
+                return null;
+            }
+
+            return role.UserRoles.Select(usrl => usrl.User)
+                    .Select(user => Mapper.Map(user))
+                    //.MapToDTO().ResolveGroupAndRole(_context)
+                    ;
         }
     }
 }

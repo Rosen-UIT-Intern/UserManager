@@ -32,34 +32,6 @@ namespace UserManager.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserGroups",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
-                    GroupId = table.Column<Guid>(nullable: false),
-                    IsMain = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserGroups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRoles",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
-                    RoleId = table.Column<Guid>(nullable: false),
-                    IsMain = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRoles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -83,13 +55,13 @@ namespace UserManager.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
                     ProfileImage = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    WorkPhone = table.Column<string>(nullable: true),
-                    PrivatePhone = table.Column<string>(nullable: true),
-                    Mobile = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
+                    WorkPhone = table.Column<string>(nullable: false),
+                    PrivatePhone = table.Column<string>(nullable: false),
+                    Mobile = table.Column<string>(nullable: false),
                     OrganizationId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -99,6 +71,56 @@ namespace UserManager.Dal.Migrations
                         name: "FK_Users_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserGroups",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    GroupId = table.Column<Guid>(nullable: false),
+                    IsMain = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserGroups", x => new { x.UserId, x.GroupId });
+                    table.ForeignKey(
+                        name: "FK_UserGroups_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserGroups_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false),
+                    IsMain = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -123,20 +145,6 @@ namespace UserManager.Dal.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "UserGroups",
-                columns: new[] { "Id", "GroupId", "IsMain", "UserId" },
-                values: new object[,]
-                {
-                    { new Guid("540ab5fc-4615-4cde-a284-cc9d9698a238"), new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), true, "12345" },
-                    { new Guid("a2bc5162-d036-436e-9ac2-ab4571ec0694"), new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), false, "12345" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "UserRoles",
-                columns: new[] { "Id", "IsMain", "RoleId", "UserId" },
-                values: new object[] { new Guid("d0bd5e70-f6b3-4671-b587-0a87995daf84"), true, new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), "12345" });
-
-            migrationBuilder.InsertData(
                 table: "Groups",
                 columns: new[] { "Id", "Name", "OrganizationId" },
                 values: new object[,]
@@ -152,10 +160,35 @@ namespace UserManager.Dal.Migrations
                 columns: new[] { "Id", "Email", "FirstName", "LastName", "Mobile", "OrganizationId", "PrivatePhone", "ProfileImage", "WorkPhone" },
                 values: new object[] { "12345", "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]", "Minh", "Nguyen Le", "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]", new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]", "image", "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]" });
 
+            migrationBuilder.InsertData(
+                table: "UserGroups",
+                columns: new[] { "UserId", "GroupId", "IsMain" },
+                values: new object[] { "12345", new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), true });
+
+            migrationBuilder.InsertData(
+                table: "UserGroups",
+                columns: new[] { "UserId", "GroupId", "IsMain" },
+                values: new object[] { "12345", new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), false });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "UserId", "RoleId", "IsMain" },
+                values: new object[] { "12345", new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), true });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_OrganizationId",
                 table: "Groups",
                 column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGroups_GroupId",
+                table: "UserGroups",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_OrganizationId",
@@ -166,16 +199,16 @@ namespace UserManager.Dal.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Groups");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
                 name: "UserGroups");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");

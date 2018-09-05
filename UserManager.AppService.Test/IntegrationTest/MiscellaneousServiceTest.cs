@@ -52,5 +52,61 @@ namespace UserManager.AppService.Test.IntegrationTest
                 Assert.Equal("Engineer", role.Name);
             }
         }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestGetUserThatHaveRole()
+        {
+            using (var context = InitDbContext("get_user_that_have_role"))
+            {
+                //instantiate a role service
+                var service = new RoleService(context);
+
+                {
+                    //get user that have engineer role
+                    var users = service.GetUsers(SeedData.Instance.EngineerRole.Id);
+
+                    //test get all roles
+                    Assert.Single(users);
+                }
+
+                {
+                    //get user that have tech lead role
+                    var users = service.GetUsers(SeedData.Instance.TechLeadRole.Id);
+
+                    //test get all roles
+                    Assert.Empty(users);
+                }
+            }
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestGetUserThatHaveGroup()
+        {
+            using (var context = InitDbContext("get_user_that_have_group"))
+            {
+                //instantiate a role service
+                var service = new GroupService(context);
+
+                {
+                    //get user that have engineer role
+                    var users = service.GetUsers(SeedData.Instance.RosenTechGroup.Id);
+
+                    //test get all roles
+                    Assert.Single(users);
+
+                    _output.WriteLine($"{users.First().Id} {users.First().FirstName} {users.First().LastName}");
+                }
+
+                {
+                    //get user that have tech lead role
+                    var users = service.GetUsers(SeedData.Instance.UITSEGroup.Id);
+
+                    //test get all roles
+                    Assert.Empty(users);
+                }
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace UserManager.Dal
 {
@@ -8,5 +9,7 @@ namespace UserManager.Dal
         public Guid OrganizationId { get; set; }
         public Organization Organization { get; set; }
         public string Name { get; set; }
+
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
     }
 }

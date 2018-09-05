@@ -30,3 +30,7 @@ dotnet test
 ```
 run.bat
 ```
+## remove old database and update to new database  
+```
+./update.database.sh
+```

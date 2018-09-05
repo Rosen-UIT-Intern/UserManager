@@ -19,12 +19,12 @@ using UserManager.Dal;
 namespace UserManager.AppService.Test.E2ETest
 {
     [Collection("E2E")]
-    public class RoleControllerTest
+    public class GroupControllerTest
     {
         private readonly E2EControllerTestFixture fixture;
         private readonly ITestOutputHelper output;
 
-        public RoleControllerTest(ITestOutputHelper output, E2EControllerTestFixture fixture)
+        public GroupControllerTest(ITestOutputHelper output, E2EControllerTestFixture fixture)
         {
             this.output = output;
             this.fixture = fixture;
@@ -32,37 +32,63 @@ namespace UserManager.AppService.Test.E2ETest
 
         [Fact]
         [Trait("Category", "E2E")]
-        public void TestGetRole()
+        public void TestGetGroup()
         {
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = fixture.BASE_URI;
 
-                HttpResponseMessage result = client.GetAsync("/api/role").GetAwaiter().GetResult();
+                HttpResponseMessage result = client.GetAsync("/api/group").GetAwaiter().GetResult();
 
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                List<RoleDTO> roleDTOs = JsonConvert.DeserializeObject<List<RoleDTO>>(content);
+                List<GroupDTO> groupDTOs = JsonConvert.DeserializeObject<List<GroupDTO>>(content);
 
-                foreach (var roleDTO in roleDTOs)
+                foreach (var groupDTO in groupDTOs)
                 {
-                    output.WriteLine($"{roleDTO.Id} {roleDTO.Name}");
+                    output.WriteLine($"{groupDTO.Id} {groupDTO.Name}");
                 }
 
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-                Assert.Equal(3, roleDTOs.Count);
+
+                Assert.Equal(4, groupDTOs.Count);
             }
         }
 
         [Fact]
         [Trait("Category", "E2E")]
-        public void TestGetUserInRole()
+        public void TestGetGroupBelongToOrganization()
         {
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = fixture.BASE_URI;
 
-                HttpResponseMessage result = client.GetAsync($"/api/role/user/{SeedData.Instance.EngineerRole.Id}").GetAwaiter().GetResult();
+                HttpResponseMessage result = client.GetAsync($"/api/group/org/{SeedData.Instance.RosenOrg.Id}").GetAwaiter().GetResult();
+
+                var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                List<GroupDTO> groupDTOs = JsonConvert.DeserializeObject<List<GroupDTO>>(content);
+
+                foreach (var groupDTO in groupDTOs)
+                {
+                    output.WriteLine($"{groupDTO.Id} {groupDTO.Name}");
+                }
+
+                Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+
+                Assert.Equal(2, groupDTOs.Count);
+            }
+        }
+
+        [Fact]
+        [Trait("Category", "E2E")]
+        public void TestGetUserBelongToGroup()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = fixture.BASE_URI;
+
+                HttpResponseMessage result = client.GetAsync($"/api/group/user/{SeedData.Instance.RosenTechGroup.Id}").GetAwaiter().GetResult();
 
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
