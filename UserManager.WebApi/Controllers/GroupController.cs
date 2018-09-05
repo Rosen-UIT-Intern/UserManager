@@ -42,7 +42,7 @@ namespace UserManager.WebApi.Controllers
             return Json(group);
         }
 
-        [HttpGet("/org/{id}")]
+        [HttpGet("org/{id}")]
         public IActionResult GetGroupBelongToOrganization(string id)
         {
             if (!Guid.TryParse(id, out Guid orgId))
