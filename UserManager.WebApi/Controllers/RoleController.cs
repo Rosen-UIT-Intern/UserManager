@@ -27,12 +27,30 @@ namespace UserManager.WebApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-            if (!Guid.TryParse(id, out Guid orgId))
+            if (!Guid.TryParse(id, out Guid roleId))
             {
                 return BadRequest(id);
             }
 
-            var org = _service.GetRole(orgId);
+            var org = _service.GetRole(roleId);
+
+            if (org == null)
+            {
+                return NotFound(id);
+            }
+
+            return Json(org);
+        }
+
+        [HttpGet("user/{id}")]
+        public IActionResult GetUser(string id)
+        {
+            if (!Guid.TryParse(id, out Guid roleId))
+            {
+                return BadRequest(id);
+            }
+
+            var org = _service.GetUsers(roleId);
 
             if (org == null)
             {
