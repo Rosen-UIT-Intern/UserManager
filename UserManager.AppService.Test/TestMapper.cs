@@ -40,10 +40,18 @@ namespace UserManager.AppService.Test
                 Id = groupId,
                 Name = groupName
             };
+            var orgId = Guid.NewGuid();
+            var orgName = "Test Org";
+            group.Organization = new Organization()
+            {
+                Id = orgId,
+                Name = orgName
+            };
             GroupDTO dto = Mapper.Map(group);
 
             Assert.Equal(dto.Id, groupId.ToString());
             Assert.Equal(dto.Name, groupName);
+            Assert.Equal(dto.Organization.Id, orgId.ToString());
         }
 
         [Fact]
@@ -56,9 +64,13 @@ namespace UserManager.AppService.Test
             GroupDTO groupDto = new GroupDTO()
             {
                 Id = groupId.ToString(),
-                Name = groupName
+                Name = groupName,
+                Organization = new OrganizationDTO()
+                {
+                     Id=orgId.ToString()
+                }
             };
-            Group group = Mapper.Map(groupDto, orgId);
+            Group group = Mapper.Map(groupDto);
 
             Assert.Equal(group.Id, groupId);
             Assert.Equal(group.Name, groupName);

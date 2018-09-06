@@ -13,6 +13,7 @@ using UserManager.AppService.Services;
 using UserManager.AppService.Utility;
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
+using Newtonsoft.Json;
 
 namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
 {

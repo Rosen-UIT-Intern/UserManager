@@ -11,8 +11,6 @@ namespace UserManager.AppService.Utility
     {
         public static UserDTO MapLight(User user)
         {
-
-
             return new UserDTO
             {
                 Id = user.Id,
@@ -30,7 +28,6 @@ namespace UserManager.AppService.Utility
         [Obsolete("this method is not tested")]
         public static UserDTO Map(User user)
         {
-
             var userDTO = new UserDTO
             {
                 Id = user.Id,
@@ -70,17 +67,18 @@ namespace UserManager.AppService.Utility
             return new GroupDTO()
             {
                 Id = group.Id.ToString(),
-                Name = group.Name
+                Name = group.Name,
+                Organization = Mapper.Map(group.Organization)
             };
         }
 
-        public static Group Map(GroupDTO groupDTO, Guid organizationId)
+        public static Group Map(GroupDTO groupDTO)
         {
             return new Group()
             {
                 Id = Guid.Parse(groupDTO.Id),
                 Name = groupDTO.Name,
-                OrganizationId = organizationId
+                OrganizationId = Guid.Parse(groupDTO.Organization.Id)
             };
         }
 

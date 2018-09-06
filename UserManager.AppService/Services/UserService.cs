@@ -135,47 +135,69 @@ namespace UserManager.AppService.Services
                 throw new ArgumentException($"organization {orgid} does not exist");
             }
 
-            //check all group exist
-            foreach (var groupDto in dto.Groups)
-            {
-                if (_context.Groups.FirstOrDefault(gr => groupDto.Id.Equals(gr.Id.ToString())) == null)
-                {
-                    throw new ArgumentException($"group {groupDto.Id} does not exist");
-                }
-            }
+            ////check all group exist
+            //foreach (var groupDto in dto.Groups)
+            //{
+            //    if (_context.Groups.FirstOrDefault(gr => groupDto.Id.Equals(gr.Id.ToString())) == null)
+            //    {
+            //        throw new ArgumentException($"group {groupDto.Id} does not exist");
+            //    }
+            //}
 
-            //check all role exist
-            foreach (var roleDto in dto.Roles)
-            {
-                if (_context.Roles.FirstOrDefault(rl => roleDto.Id.Equals(rl.Id.ToString())) == null)
-                {
-                    throw new ArgumentException($"role {roleDto.Id} does not exist");
-                }
-            }
+            ////check all role exist
+            //foreach (var roleDto in dto.Roles)
+            //{
+            //    if (_context.Roles.FirstOrDefault(rl => roleDto.Id.Equals(rl.Id.ToString())) == null)
+            //    {
+            //        throw new ArgumentException($"role {roleDto.Id} does not exist");
+            //    }
+            //}
 
-            var userGroups = (
-                from gr in _context.Groups
-                where dto.Groups.FirstOrDefault(gDto => gDto.Id.Equals(gr.Id.ToString())) != null
-                select new UserGroup()
-                {
-                    GroupId = gr.Id,
-                    UserId = id,
-                    IsMain = dto.MainGroup.Id.Equals(gr.Id.ToString())
-                })
-            .ToArray()
-            ;
+            var userGroups =
+                //(
+                //    from gr in _context.Groups
+                //    where dto.Groups.FirstOrDefault(gDto => gDto.Id.Equals(gr.Id.ToString())) != null
+                //    select new UserGroup()
+                //    {
+                //        GroupId = gr.Id,
+                //        UserId = id,
+                //        IsMain = dto.MainGroup.Id.Equals(gr.Id.ToString())
+                //    }
+                //)
+                //.ToArray()
+                dto.Groups.Select(
+                    grDTO => new UserGroup()
+                    {
+                        GroupId = Guid.Parse(grDTO.Id),
+                        UserId = id,
+                        IsMain = dto.MainGroup.Id.Equals(grDTO.Id)
+                    }
+                    )
+                    .ToArray()
+                ;
 
-            var userRoles = (
-                from rl in _context.Roles
-                where dto.Roles.FirstOrDefault(rDto => rDto.Id.Equals(rl.Id.ToString())) != null
-                select new UserRole()
-                {
-                    RoleId = rl.Id,
-                    UserId = id,
-                    IsMain = dto.MainRole.Id.Equals(rl.Id.ToString())
-                })
-            .ToArray()
-            ;
+            var userRoles =
+                //(
+                //    from rl in _context.Roles
+                //    where dto.Roles.FirstOrDefault(rDto => rDto.Id.Equals(rl.Id.ToString())) != null
+                //    select new UserRole()
+                //    {
+                //        RoleId = rl.Id,
+                //        UserId = id,
+                //        IsMain = dto.MainRole.Id.Equals(rl.Id.ToString())
+                //    }
+                //)
+                //.ToArray()
+                dto.Roles.Select(
+                    rlDTO => new UserRole()
+                    {
+                        RoleId = Guid.Parse(rlDTO.Id),
+                        UserId = id,
+                        IsMain = dto.MainRole.Id.Equals(rlDTO.Id)
+                    }
+                    )
+                    .ToArray()
+                ;
 
             User user = new User()
             {
@@ -197,7 +219,16 @@ namespace UserManager.AppService.Services
             _context.UserRoles.AddRange(userRoles);
 
             _context.Users.Add(user);
-            _context.SaveChanges();
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException dbe)
+            {
+                //todo log exception
+                throw new ArgumentException(dbe.InnerException.Message);
+            }
 
             return id;
         }

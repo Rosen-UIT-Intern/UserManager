@@ -21,13 +21,13 @@ namespace UserManager.AppService.Services
 
         public IEnumerable<GroupDTO> GetAllGroup()
         {
-            return _context.Groups.Select(g => Mapper.Map(g));
+            return _context.Groups.Include(g => g.Organization).Select(g => Mapper.Map(g));
         }
 
         public IEnumerable<GroupDTO> GetAllGroupBelongToOrganization(Guid organizationId)
         {
             return
-                from grp in _context.Groups
+                from grp in _context.Groups.Include(g => g.Organization)
                 where grp.OrganizationId.Equals(organizationId)
                 select Mapper.Map(grp)
                 ;
@@ -35,7 +35,7 @@ namespace UserManager.AppService.Services
 
         public GroupDTO GetGroup(Guid groupId)
         {
-            var group = _context.Groups.FirstOrDefault(g => g.Id.Equals(groupId));
+            var group = _context.Groups.Include(g => g.Organization).FirstOrDefault(g => g.Id.Equals(groupId));
 
             if (group == null)
             {
