@@ -46,6 +46,8 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
         private UserDTO GetTestUser()
         {
             SeedData seedData = SeedData.Instance;
+            Group group = seedData.RosenTechGroup;
+            group.Organization = seedData.RosenOrg;
             return new UserDTO()
             {
                 Id = "test1",
@@ -53,8 +55,8 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 LastName = "last",
                 ProfileImage = "image",
                 Organization = Mapper.Map(seedData.RosenOrg),
-                MainGroup = Mapper.Map(seedData.RosenTechGroup),
-                Groups = new[] { Mapper.Map(seedData.RosenTechGroup) },
+                MainGroup = Mapper.Map(group),
+                Groups = new[] { Mapper.Map(group) },
                 MainRole = Mapper.Map(seedData.EngineerRole),
                 Roles = new[] { Mapper.Map(seedData.EngineerRole) },
                 Email = new Email[]

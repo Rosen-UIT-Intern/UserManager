@@ -48,6 +48,14 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         private (UserDTO user1, UserDTO user2, UserDTO user3) GetTestUser()
         {
             SeedData seedData = SeedData.Instance;
+
+            Group rosenTechGroup = seedData.RosenTechGroup;
+            rosenTechGroup.Organization = seedData.RosenOrg;
+            Group rosenHRGroup = seedData.RosenHRGroup;
+            rosenHRGroup.Organization = seedData.RosenOrg;
+            Group uITSEGroup = seedData.UITSEGroup;
+            uITSEGroup.Organization = seedData.UITOrg;
+
             var user1 = new UserDTO()
             {
                 Id = "test1",
@@ -55,8 +63,8 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                 LastName = "nguyen le",
                 ProfileImage = "image",
                 Organization = Mapper.Map(seedData.RosenOrg),
-                MainGroup = Mapper.Map(seedData.RosenTechGroup),
-                Groups = new[] { Mapper.Map(seedData.RosenTechGroup) },
+                MainGroup = Mapper.Map(rosenTechGroup),
+                Groups = new[] { Mapper.Map(rosenTechGroup) },
                 MainRole = Mapper.Map(seedData.EngineerRole),
                 Roles = new[] { Mapper.Map(seedData.EngineerRole) },
                 Email = new Email[]
@@ -87,8 +95,8 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                 LastName = "nguyen le",
                 ProfileImage = "image",
                 Organization = Mapper.Map(seedData.RosenOrg),
-                MainGroup = Mapper.Map(seedData.RosenHRGroup),
-                Groups = new[] { Mapper.Map(seedData.RosenHRGroup) },
+                MainGroup = Mapper.Map(rosenHRGroup),
+                Groups = new[] { Mapper.Map(rosenHRGroup) },
                 MainRole = Mapper.Map(seedData.HRLeadRole),
                 Roles = new[] { Mapper.Map(seedData.HRLeadRole) },
                 Email = new Email[]
@@ -119,8 +127,8 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                 LastName = "nguyen le",
                 ProfileImage = "image",
                 Organization = Mapper.Map(seedData.UITOrg),
-                MainGroup = Mapper.Map(seedData.UITSEGroup),
-                Groups = new[] { Mapper.Map(seedData.UITSEGroup) },
+                MainGroup = Mapper.Map(uITSEGroup),
+                Groups = new[] { Mapper.Map(uITSEGroup) },
                 MainRole = Mapper.Map(seedData.EngineerRole),
                 Roles = new[] { Mapper.Map(seedData.EngineerRole) },
                 Email = new Email[]
