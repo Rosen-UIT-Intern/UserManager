@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="UserManager.AppService.Test.E2ETest.UserController.CreateUserTest.TestCreateUserController" /><Add Test="UserManager.AppService.Test.E2ETest.UserController.UserControllerTest.TestCreateAndDeleteUserController" /></Playlist>

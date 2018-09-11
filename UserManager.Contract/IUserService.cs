@@ -33,7 +33,7 @@ namespace UserManager.Contract
         /// <param name="dto">user's info</param>
         /// <param name="id">user's id</param>
         /// <returns>user's id if success, else the error message</returns>
-        string Create(UserDTO dto,string id);
+        string Create(CreateUserDTO dto,string id);
 
         /// <summary>
         /// Update a user's info
@@ -41,6 +41,7 @@ namespace UserManager.Contract
         /// <param name="dto">user's new info</param>
         /// <returns>user's id if success, else the error message</returns>
         string Update(UserDTO dto);
+
         /// <summary>
         /// Delete a user
         /// </summary>

@@ -19,6 +19,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
         private readonly UserDbContext context;
         public readonly UserService service;
         public readonly UserDTO TestUserDTO;
+        public readonly CreateUserDTO TestCreateUserDTO;
 
         public UserServiceTestFixture()
         {
@@ -34,7 +35,10 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
             service = new UserService(context);
 
             TestUserDTO = GetTestUser();
-            service.Create(TestUserDTO, TestUserDTO.Id);
+
+            TestCreateUserDTO = GetTestCreateUser();
+
+            service.Create(TestCreateUserDTO, TestUserDTO.Id);
         }
 
         public void Dispose()
@@ -59,6 +63,41 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 Groups = new[] { Mapper.Map(group) },
                 MainRole = Mapper.Map(seedData.EngineerRole),
                 Roles = new[] { Mapper.Map(seedData.EngineerRole) },
+                Email = new Email[]
+                {
+                    new Email{ Address="main email", IsMain=true },
+                    new Email{ Address="not main email", IsMain=false },
+                },
+                WorkPhone = new Phone[]
+                {
+                    new Phone{ Number = "main work phone", IsMain = true},
+                    new Phone{ Number = "not main work phone", IsMain = false},
+                },
+                PrivatePhone = new Phone[]
+                {
+                    new Phone{ Number = "private phone", IsMain = false},
+                    new Phone{ Number = "private phone 2", IsMain = false},
+                },
+                Mobile = new Mobile[]
+                {
+                    new Mobile{ Number = "main mobile",IsMain = true},
+                    new Mobile{ Number = "not main mobile",IsMain = false},
+                }
+            };
+        }
+
+        //generate a test user DTO
+        private CreateUserDTO GetTestCreateUser()
+        {
+            SeedData seedData = SeedData.Instance;
+            return new CreateUserDTO()
+            {
+                FirstName = "first",
+                LastName = "last",
+                ProfileImage = "image",
+                OrganizationId = seedData.RosenOrg.Id,
+                Groups = new[] { (seedData.RosenTechGroup.Id, true) },
+                Roles = new[] { (seedData.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true },

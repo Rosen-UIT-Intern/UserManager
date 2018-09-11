@@ -117,16 +117,14 @@ namespace UserManager.AppService.Services
             return user;
         }
 
-        public string Create(UserDTO dto, string id)
+        public string Create(CreateUserDTO dto, string id)
         {
-            dto.Id = id;
-
             if (_context.Users.FirstOrDefault(u => u.Id.Equals(id)) != null)
             {
                 throw new ArgumentException($"{id} already existed");
             }
 
-            var orgid = Guid.Parse(dto.Organization.Id);
+            var orgid = dto.OrganizationId;
 
             //check org exist
             Organization org = _context.Organizations.FirstOrDefault(o => o.Id.Equals(orgid));
@@ -153,6 +151,26 @@ namespace UserManager.AppService.Services
             //    }
             //}
 
+            //make sure that one and only one group is main
+            try
+            {
+                dto.Groups.Single(grDTO => grDTO.isMain);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ArgumentException("one and only one main group must exist");
+            }
+
+            //make sure that one and only one role is main
+            try
+            {
+                dto.Roles.Single(rlDTO => rlDTO.isMain);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ArgumentException("one and only one main role must exist");
+            }
+
             var userGroups =
                 //(
                 //    from gr in _context.Groups
@@ -168,9 +186,9 @@ namespace UserManager.AppService.Services
                 dto.Groups.Select(
                     grDTO => new UserGroup()
                     {
-                        GroupId = Guid.Parse(grDTO.Id),
+                        GroupId = grDTO.GroupId,
                         UserId = id,
-                        IsMain = dto.MainGroup.Id.Equals(grDTO.Id)
+                        IsMain = grDTO.isMain
                     }
                     )
                     .ToArray()
@@ -191,9 +209,9 @@ namespace UserManager.AppService.Services
                 dto.Roles.Select(
                     rlDTO => new UserRole()
                     {
-                        RoleId = Guid.Parse(rlDTO.Id),
+                        RoleId = rlDTO.RoleId,
                         UserId = id,
-                        IsMain = dto.MainRole.Id.Equals(rlDTO.Id)
+                        IsMain = rlDTO.isMain
                     }
                     )
                     .ToArray()

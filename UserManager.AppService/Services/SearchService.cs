@@ -56,12 +56,11 @@ namespace UserManager.AppService.Services
         public static IEnumerable<User> FilterByOrganizationId(this IEnumerable<User> users, QuerryDTO querry)
         {
             return
-                string.IsNullOrWhiteSpace(querry.OrganizationId)
-                ?
+                querry.OrganizationId == default(Guid) ?
                 users
                 :
                 from user in users
-                where user.OrganizationId.ToString().Equals(querry.OrganizationId)
+                where user.OrganizationId.Equals(querry.OrganizationId)
                 select user
                 ;
         }

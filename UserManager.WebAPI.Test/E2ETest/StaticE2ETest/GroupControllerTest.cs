@@ -16,22 +16,24 @@ using UserManager.WebApi;
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
 
-namespace UserManager.AppService.Test.E2ETest
+using UserManager.AppService.Test.E2ETest;
+
+namespace UserManager.AppService.Test.StaticE2ETest
 {
-    [Collection("E2E")]
+    [Collection("StaticE2E")]
     public class GroupControllerTest
     {
         private readonly E2EControllerTestFixture fixture;
         private readonly ITestOutputHelper output;
 
-        public GroupControllerTest(ITestOutputHelper output, E2EControllerTestFixture fixture)
+        public GroupControllerTest(E2EControllerTestFixture fixture, ITestOutputHelper output)
         {
             this.output = output;
             this.fixture = fixture;
         }
 
         [Fact]
-        [Trait("Category", "E2E")]
+        [Trait("Category", "StaticE2E")]
         public void TestGetGroup()
         {
             using (HttpClient client = new HttpClient())
@@ -56,7 +58,7 @@ namespace UserManager.AppService.Test.E2ETest
         }
 
         [Fact]
-        [Trait("Category", "E2E")]
+        [Trait("Category", "StaticE2E")]
         public void TestGetGroupBelongToOrganization()
         {
             using (HttpClient client = new HttpClient())
@@ -81,7 +83,7 @@ namespace UserManager.AppService.Test.E2ETest
         }
 
         [Fact]
-        [Trait("Category", "E2E")]
+        [Trait("Category", "StaticE2E")]
         public void TestGetUserBelongToGroup()
         {
             using (HttpClient client = new HttpClient())

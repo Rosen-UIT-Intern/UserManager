@@ -72,7 +72,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
 
             QuerryDTO querryDTO = new QuerryDTO()
             {
-                Id = fixture.TestUser1.Id
+                Id = fixture.TestUser1Id
             };
             _output.WriteLine(querryDTO.Id);
             var querryResult = service.Search(querryDTO);
@@ -140,7 +140,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             {
                 QuerryDTO querryDTO = new QuerryDTO()
                 {
-                    OrganizationId = SeedData.Instance.RosenOrg.Id.ToString()
+                    OrganizationId = SeedData.Instance.RosenOrg.Id
                 };
 
                 var querryResult = service.Search(querryDTO);
@@ -159,7 +159,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             {
                 QuerryDTO querryDTO = new QuerryDTO()
                 {
-                    OrganizationId = SeedData.Instance.UITOrg.Id.ToString()
+                    OrganizationId = SeedData.Instance.UITOrg.Id
                 };
 
                 var querryResult = service.Search(querryDTO);
