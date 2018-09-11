@@ -35,16 +35,37 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 var service = new UserService(context);
 
                 //create a user and insert into db
-                UserDTO userDTO = fixture.TestUserDTO;
+                //UserDTO userDTO = fixture.TestUserDTO;
+                var createUserDTOId = fixture.TestUserDTO.Id;
+                CreateUserDTO createUserDTO = fixture.TestCreateUserDTO;
 
                 try
                 {
-                    Assert.Equal(userDTO.Id, service.Create(userDTO, userDTO.Id));
+                    Assert.Equal(createUserDTOId, service.Create(createUserDTO, createUserDTOId));
                 }
                 catch (ArgumentException aex)
                 {
                     _output.WriteLine(aex.Message);
                 }
+            }
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestDeleteUser()
+        {
+            using (var context = InitDbContext("delete_user"))
+            {
+                var service = new UserService(context);
+
+                //create a user and insert into db
+                //UserDTO userDTO = fixture.TestUserDTO;
+                var createUserDTOId = fixture.TestUserDTO.Id;
+                CreateUserDTO createUserDTO = fixture.TestCreateUserDTO;
+
+                service.Create(createUserDTO, createUserDTOId);
+
+                Assert.True(service.Delete(createUserDTOId));
             }
         }
 

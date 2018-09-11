@@ -26,7 +26,7 @@ namespace UserManager.AppService.Test
             Assert.Equal(testUser.LastName, testUserDTO.LastName);
             Assert.Equal(testUser.ProfileImage, testUserDTO.ProfileImage);
 
-            Assert.Equal(testUser.OrganizationId.ToString(), testUserDTO.Organization.Id);
+            Assert.Equal(testUser.Organization.Id, testUserDTO.Organization.Id);
         }
 
         [Fact]
@@ -49,9 +49,9 @@ namespace UserManager.AppService.Test
             };
             GroupDTO dto = Mapper.Map(group);
 
-            Assert.Equal(dto.Id, groupId.ToString());
+            Assert.Equal(dto.Id, groupId);
             Assert.Equal(dto.Name, groupName);
-            Assert.Equal(dto.Organization.Id, orgId.ToString());
+            Assert.Equal(dto.Organization.Id, orgId);
         }
 
         [Fact]
@@ -63,11 +63,11 @@ namespace UserManager.AppService.Test
             var orgId = Guid.NewGuid();
             GroupDTO groupDto = new GroupDTO()
             {
-                Id = groupId.ToString(),
+                Id = groupId,
                 Name = groupName,
                 Organization = new OrganizationDTO()
                 {
-                     Id=orgId.ToString()
+                    Id = orgId
                 }
             };
             Group group = Mapper.Map(groupDto);
@@ -92,7 +92,7 @@ namespace UserManager.AppService.Test
 
             OrganizationDTO orgDTO = Mapper.Map(org);
 
-            Assert.Equal(orgDTO.Id, orgId.ToString());
+            Assert.Equal(orgDTO.Id, orgId);
             Assert.Equal(orgDTO.Name, orgName);
         }
 
@@ -105,7 +105,7 @@ namespace UserManager.AppService.Test
 
             OrganizationDTO orgDTO = new OrganizationDTO()
             {
-                Id = orgId.ToString(),
+                Id = orgId,
                 Name = orgName
             };
 
@@ -130,7 +130,7 @@ namespace UserManager.AppService.Test
 
             RoleDTO roleDTO = Mapper.Map(role);
 
-            Assert.Equal(roleDTO.Id, roleId.ToString());
+            Assert.Equal(roleDTO.Id, roleId);
             Assert.Equal(roleDTO.Name, roleName);
         }
 
@@ -143,7 +143,7 @@ namespace UserManager.AppService.Test
 
             RoleDTO roleDTO = new RoleDTO()
             {
-                Id = roleId.ToString(),
+                Id = roleId,
                 Name = roleName
             };
 

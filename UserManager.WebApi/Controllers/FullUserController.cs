@@ -40,7 +40,8 @@ namespace UserManager.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] UserDTO dto)
+        [Produces("text/plain")]
+        public IActionResult CreateUser([FromBody] CreateUserDTO dto)
         {
             var id = _randomIdGenerator.GetId(5);
             string result = null;
@@ -62,6 +63,7 @@ namespace UserManager.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Produces("text/plain")]
         public IActionResult DeleteUser(string id)
         {
             var result = _service.Delete(id);

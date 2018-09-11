@@ -66,7 +66,7 @@ namespace UserManager.AppService.Utility
         {
             return new GroupDTO()
             {
-                Id = group.Id.ToString(),
+                Id = group.Id,
                 Name = group.Name,
                 Organization = Mapper.Map(group.Organization)
             };
@@ -76,9 +76,9 @@ namespace UserManager.AppService.Utility
         {
             return new Group()
             {
-                Id = Guid.Parse(groupDTO.Id),
+                Id = groupDTO.Id,
                 Name = groupDTO.Name,
-                OrganizationId = Guid.Parse(groupDTO.Organization.Id)
+                OrganizationId = groupDTO.Organization.Id
             };
         }
 
@@ -86,7 +86,7 @@ namespace UserManager.AppService.Utility
         {
             return new OrganizationDTO()
             {
-                Id = organization.Id.ToString(),
+                Id = organization.Id,
                 Name = organization.Name
             };
         }
@@ -95,7 +95,7 @@ namespace UserManager.AppService.Utility
         {
             return new Organization()
             {
-                Id = Guid.Parse(organizationDTO.Id),
+                Id = organizationDTO.Id,
                 Name = organizationDTO.Name
             };
         }
@@ -104,7 +104,7 @@ namespace UserManager.AppService.Utility
         {
             return new RoleDTO()
             {
-                Id = role.Id.ToString(),
+                Id = role.Id,
                 Name = role.Name
             };
         }
@@ -113,7 +113,7 @@ namespace UserManager.AppService.Utility
         {
             return new Role()
             {
-                Id = Guid.Parse(roleDTO.Id),
+                Id = roleDTO.Id,
                 Name = roleDTO.Name
             };
         }

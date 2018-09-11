@@ -15,22 +15,24 @@ using Newtonsoft.Json;
 using UserManager.WebApi;
 using UserManager.Contract.DTOs;
 
-namespace UserManager.AppService.Test.E2ETest
+using UserManager.AppService.Test.E2ETest;
+
+namespace UserManager.AppService.Test.StaticE2ETest
 {
-    [Collection("E2E")]
-    public class OrganizeControllerTest
+    [Collection("StaticE2E")]
+    public class OrganizationControllerTest
     {
         private readonly E2EControllerTestFixture fixture;
         private readonly ITestOutputHelper output;
 
-        public OrganizeControllerTest(ITestOutputHelper output, E2EControllerTestFixture fixture)
+        public OrganizationControllerTest(ITestOutputHelper output, E2EControllerTestFixture fixture)
         {
             this.output = output;
             this.fixture = fixture;
         }
 
         [Fact]
-        [Trait("Category", "E2E")]
+        [Trait("Category", "StaticE2E")]
         public void TestGetOrganization()
         {
             using (HttpClient client = new HttpClient())

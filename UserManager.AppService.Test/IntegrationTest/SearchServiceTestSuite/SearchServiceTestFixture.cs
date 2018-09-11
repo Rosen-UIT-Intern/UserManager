@@ -20,9 +20,12 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
     {
         private readonly UserDbContext context;
         public readonly SearchService service;
-        public readonly UserDTO TestUser1;
-        public readonly UserDTO TestUser2;
-        public readonly UserDTO TestUser3;
+        public readonly CreateUserDTO TestUser1;
+        public readonly CreateUserDTO TestUser2;
+        public readonly CreateUserDTO TestUser3;
+        public readonly string TestUser1Id = "test1";
+        public readonly string TestUser2Id = "test2";
+        public readonly string TestUser3Id = "test3";
 
         public SearchServiceTestFixture()
         {
@@ -40,33 +43,23 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             (TestUser1, TestUser2, TestUser3) = GetTestUser();
 
             UserService userService = new UserService(context);
-            userService.Create(TestUser1, TestUser1.Id);
-            userService.Create(TestUser2, TestUser2.Id);
-            userService.Create(TestUser3, TestUser3.Id);
+            userService.Create(TestUser1, TestUser1Id);
+            userService.Create(TestUser2, TestUser2Id);
+            userService.Create(TestUser3, TestUser3Id);
         }
 
-        private (UserDTO user1, UserDTO user2, UserDTO user3) GetTestUser()
+        private (CreateUserDTO user1, CreateUserDTO user2, CreateUserDTO user3) GetTestUser()
         {
             SeedData seedData = SeedData.Instance;
 
-            Group rosenTechGroup = seedData.RosenTechGroup;
-            rosenTechGroup.Organization = seedData.RosenOrg;
-            Group rosenHRGroup = seedData.RosenHRGroup;
-            rosenHRGroup.Organization = seedData.RosenOrg;
-            Group uITSEGroup = seedData.UITSEGroup;
-            uITSEGroup.Organization = seedData.UITOrg;
-
-            var user1 = new UserDTO()
+            var user1 = new CreateUserDTO()
             {
-                Id = "test1",
                 FirstName = "minh1",
                 LastName = "nguyen le",
                 ProfileImage = "image",
-                Organization = Mapper.Map(seedData.RosenOrg),
-                MainGroup = Mapper.Map(rosenTechGroup),
-                Groups = new[] { Mapper.Map(rosenTechGroup) },
-                MainRole = Mapper.Map(seedData.EngineerRole),
-                Roles = new[] { Mapper.Map(seedData.EngineerRole) },
+                OrganizationId = seedData.RosenOrg.Id,
+                Groups = new[] { (seedData.RosenTechGroup.Id, true) },
+                Roles = new[] { (seedData.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},
@@ -88,17 +81,14 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                     new Mobile{ Number="not main mobile",IsMain =false },
                 }
             };
-            var user2 = new UserDTO()
+            var user2 = new CreateUserDTO()
             {
-                Id = "test2",
                 FirstName = "minh2",
                 LastName = "nguyen le",
                 ProfileImage = "image",
-                Organization = Mapper.Map(seedData.RosenOrg),
-                MainGroup = Mapper.Map(rosenHRGroup),
-                Groups = new[] { Mapper.Map(rosenHRGroup) },
-                MainRole = Mapper.Map(seedData.HRLeadRole),
-                Roles = new[] { Mapper.Map(seedData.HRLeadRole) },
+                OrganizationId = seedData.RosenOrg.Id,
+                Groups = new[] { (seedData.RosenHRGroup.Id, true) },
+                Roles = new[] { (seedData.HRLeadRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},
@@ -120,17 +110,14 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                     new Mobile{ Number="not main mobile",IsMain =false },
                 }
             };
-            var user3 = new UserDTO()
+            var user3 = new CreateUserDTO()
             {
-                Id = "test3",
                 FirstName = "lan1",
                 LastName = "nguyen le",
                 ProfileImage = "image",
-                Organization = Mapper.Map(seedData.UITOrg),
-                MainGroup = Mapper.Map(uITSEGroup),
-                Groups = new[] { Mapper.Map(uITSEGroup) },
-                MainRole = Mapper.Map(seedData.EngineerRole),
-                Roles = new[] { Mapper.Map(seedData.EngineerRole) },
+                OrganizationId = seedData.UITOrg.Id,
+                Groups = new[] { (seedData.UITSEGroup.Id, true) },
+                Roles = new[] { (seedData.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},

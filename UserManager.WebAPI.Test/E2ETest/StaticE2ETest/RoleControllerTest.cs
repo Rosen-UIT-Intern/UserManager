@@ -16,9 +16,11 @@ using UserManager.WebApi;
 using UserManager.Contract.DTOs;
 using UserManager.Dal;
 
-namespace UserManager.AppService.Test.E2ETest
+using UserManager.AppService.Test.E2ETest;
+
+namespace UserManager.AppService.Test.StaticE2ETest
 {
-    [Collection("E2E")]
+    [Collection("StaticE2E")]
     public class RoleControllerTest
     {
         private readonly E2EControllerTestFixture fixture;
@@ -31,7 +33,7 @@ namespace UserManager.AppService.Test.E2ETest
         }
 
         [Fact]
-        [Trait("Category", "E2E")]
+        [Trait("Category", "StaticE2E")]
         public void TestGetRole()
         {
             using (HttpClient client = new HttpClient())
@@ -55,7 +57,7 @@ namespace UserManager.AppService.Test.E2ETest
         }
 
         [Fact]
-        [Trait("Category", "E2E")]
+        [Trait("Category", "StaticE2E")]
         public void TestGetUserInRole()
         {
             using (HttpClient client = new HttpClient())
