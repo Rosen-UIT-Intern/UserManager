@@ -16,29 +16,25 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
 {
     public class UserServiceTestFixture : IDisposable
     {
-        private readonly UserDbContext context;
-        public readonly UserService service;
         public readonly UserDTO TestUserDTO;
-        public readonly CreateUserDTO TestCreateUserDTO;
+        public readonly FrontendUserDTO TestCreateUserDTO;
 
         public UserServiceTestFixture()
         {
-            var option = new DbContextOptionsBuilder<UserDbContext>()
-                        .UseInMemoryDatabase(databaseName: "test_database")
-                        .Options;
+            //var option = new DbContextOptionsBuilder<UserDbContext>()
+            //            .UseInMemoryDatabase(databaseName: "test_database")
+            //            .Options;
 
-            context = new UserDbContext(option);
+            //context = new UserDbContext(option);
 
-            //ensure data is seeded in inmem db
-            context.Database.EnsureCreated();
+            ////ensure data is seeded in inmem db
+            //context.Database.EnsureCreated();
 
-            service = new UserService(context);
+            //service = new UserService(context);
 
             TestUserDTO = GetTestUser();
 
             TestCreateUserDTO = GetTestCreateUser();
-
-            service.Create(TestCreateUserDTO, TestUserDTO.Id);
         }
 
         public void Dispose()
@@ -87,17 +83,17 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
         }
 
         //generate a test user DTO
-        private CreateUserDTO GetTestCreateUser()
+        private FrontendUserDTO GetTestCreateUser()
         {
             SeedData seedData = SeedData.Instance;
-            return new CreateUserDTO()
+            return new FrontendUserDTO()
             {
                 FirstName = "first",
                 LastName = "last",
                 ProfileImage = "image",
                 OrganizationId = seedData.RosenOrg.Id,
-                Groups = new[] { (seedData.RosenTechGroup.Id, true) },
-                Roles = new[] { (seedData.EngineerRole.Id, true) },
+                Groups = new[] { new FrontendGroupDTO(seedData.RosenTechGroup.Id, true) },
+                Roles = new[] { new FrontendRoleDTO(seedData.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true },

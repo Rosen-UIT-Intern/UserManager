@@ -22,6 +22,7 @@ namespace UserManager.AppService.Test.IntegrationTest
         {
             var option = new DbContextOptionsBuilder<UserDbContext>()
                         .UseInMemoryDatabase(databaseName: dbName)
+                        .EnableSensitiveDataLogging(true)
                         .Options;
 
             var context = new UserDbContext(option);
