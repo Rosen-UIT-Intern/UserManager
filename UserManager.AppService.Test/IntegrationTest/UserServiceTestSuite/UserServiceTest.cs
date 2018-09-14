@@ -71,9 +71,9 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
 
                 try
                 {
-                    //var tttId = service.Update(createUserDTO, createUserDTOId);
-                    //Assert.Equal(createUserDTOId, tttId);
-                    //_output.WriteLine(tttId);
+                    var tttId = service.Update(createUserDTO);
+                    Assert.Equal(createUserDTOId, tttId);
+                    _output.WriteLine(tttId);
                 }
                 catch (ArgumentException aex)
                 {

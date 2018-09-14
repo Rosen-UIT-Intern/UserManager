@@ -251,7 +251,7 @@ namespace UserManager.AppService.Services
             return id;
         }
 
-        public string Update(UserDTO dto)
+        public string Update(FrontendUserDTO dto)
         {
             throw new System.NotImplementedException();
         }

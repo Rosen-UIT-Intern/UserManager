@@ -40,7 +40,7 @@ namespace UserManager.Contract
         /// </summary>
         /// <param name="dto">user's new info</param>
         /// <returns>user's id if success, else the error message</returns>
-        string Update(UserDTO dto);
+        string Update(FrontendUserDTO dto);
 
         /// <summary>
         /// Delete a user
