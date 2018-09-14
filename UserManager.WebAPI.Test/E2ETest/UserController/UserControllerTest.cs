@@ -36,14 +36,14 @@ namespace UserManager.AppService.Test.E2ETest.UserController
             Init(5002);
 
             var seed = SeedData.Instance;
-            CreateUserDTO newUser = new CreateUserDTO()
+            FrontendUserDTO newUser = new FrontendUserDTO()
             {
                 FirstName = "first name",
                 LastName = "last name",
                 ProfileImage = "image",
                 OrganizationId = seed.RosenOrg.Id,
-                Groups = new[] { (seed.RosenTechGroup.Id, true) },
-                Roles = new[] { (seed.EngineerRole.Id, true) },
+                Groups = new[] { new FrontendGroupDTO(seed.RosenTechGroup.Id, true) },
+                Roles = new[] { new FrontendRoleDTO(seed.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},
@@ -88,14 +88,14 @@ namespace UserManager.AppService.Test.E2ETest.UserController
             Init(5003);
 
             var seed = SeedData.Instance;
-            CreateUserDTO newUser = new CreateUserDTO()
+            FrontendUserDTO newUser = new FrontendUserDTO()
             {
                 FirstName = "first name",
                 LastName = "last name",
                 ProfileImage = "image",
                 OrganizationId = seed.RosenOrg.Id,
-                Groups = new[] { (seed.RosenTechGroup.Id, true) },
-                Roles = new[] { (seed.EngineerRole.Id, true) },
+                Groups = new[] { new FrontendGroupDTO(seed.RosenTechGroup.Id, true) },
+                Roles = new[] { new FrontendRoleDTO(seed.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},

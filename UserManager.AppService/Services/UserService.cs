@@ -117,7 +117,7 @@ namespace UserManager.AppService.Services
             return user;
         }
 
-        public string Create(CreateUserDTO dto, string id)
+        public string Create(FrontendUserDTO dto, string id)
         {
             if (_context.Users.FirstOrDefault(u => u.Id.Equals(id)) != null)
             {
@@ -154,7 +154,7 @@ namespace UserManager.AppService.Services
             //make sure that one and only one group is main
             try
             {
-                dto.Groups.Single(grDTO => grDTO.isMain);
+                dto.Groups.Single(grDTO => grDTO.IsMain);
             }
             catch (InvalidOperationException ex)
             {
@@ -164,7 +164,7 @@ namespace UserManager.AppService.Services
             //make sure that one and only one role is main
             try
             {
-                dto.Roles.Single(rlDTO => rlDTO.isMain);
+                dto.Roles.Single(rlDTO => rlDTO.IsMain);
             }
             catch (InvalidOperationException ex)
             {
@@ -186,9 +186,9 @@ namespace UserManager.AppService.Services
                 dto.Groups.Select(
                     grDTO => new UserGroup()
                     {
-                        GroupId = grDTO.GroupId,
+                        GroupId = grDTO.Id,
                         UserId = id,
-                        IsMain = grDTO.isMain
+                        IsMain = grDTO.IsMain
                     }
                     )
                     .ToArray()
@@ -209,9 +209,9 @@ namespace UserManager.AppService.Services
                 dto.Roles.Select(
                     rlDTO => new UserRole()
                     {
-                        RoleId = rlDTO.RoleId,
+                        RoleId = rlDTO.Id,
                         UserId = id,
-                        IsMain = rlDTO.isMain
+                        IsMain = rlDTO.IsMain
                     }
                     )
                     .ToArray()
