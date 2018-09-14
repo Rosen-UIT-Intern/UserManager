@@ -22,8 +22,8 @@ namespace UserManager.AppService
             {
                 var groups =
                     from gr in context.Groups.Include(g => g.Organization)
-                    join usgr in context.UserGroups on gr.Id equals usgr.GroupId
-                    where usgr.UserId.Equals(user.Id)
+                    join usgr in context.UserGroups.Include(ug => ug.User) on gr.Id equals usgr.GroupId
+                    where usgr.User.PersonalId.Equals(user.Id)
                     select new { Group = gr, isMain = usgr.IsMain };
 
                 user.Groups = groups.Select(group => Mapper.Map(group.Group)).ToArray();
@@ -33,8 +33,8 @@ namespace UserManager.AppService
 
                 var roles =
                     from role in context.Roles
-                    join usrl in context.UserRoles on role.Id equals usrl.RoleId
-                    where usrl.UserId.Equals(user.Id)
+                    join usrl in context.UserRoles.Include(ur => ur.User) on role.Id equals usrl.RoleId
+                    where usrl.User.PersonalId.Equals(user.Id)
                     select new { role, isMain = usrl.IsMain };
 
                 user.Roles = roles.Select(role => Mapper.Map(role.role)).ToArray();

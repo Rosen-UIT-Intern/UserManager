@@ -36,10 +36,10 @@ namespace UserManager.AppService.Services
         {
             var users = (
                 from usr in _context.Users.Include(u => u.Organization)
-                where usr.Id.Equals(id)
+                where usr.PersonalId.Equals(id)
                 select new UserDTO
                 {
-                    Id = usr.Id,
+                    Id = usr.PersonalId,
                     FirstName = usr.FirstName,
                     LastName = usr.LastName,
                     ProfileImage = usr.ProfileImage,
@@ -62,8 +62,8 @@ namespace UserManager.AppService.Services
 
             var groups =
                 from gr in _context.Groups.Include(g => g.Organization)
-                join usgr in _context.UserGroups on gr.Id equals usgr.GroupId
-                where usgr.UserId.Equals(user.Id)
+                join usgr in _context.UserGroups.Include(ug => ug.User) on gr.Id equals usgr.GroupId
+                where usgr.User.PersonalId.Equals(user.Id)
                 select new { Group = gr, isMain = usgr.IsMain };
 
             var tt = groups.ToArray();
@@ -75,8 +75,8 @@ namespace UserManager.AppService.Services
 
             var roles =
                 from role in _context.Roles
-                join usrl in _context.UserRoles on role.Id equals usrl.RoleId
-                where usrl.UserId.Equals(user.Id)
+                join usrl in _context.UserRoles.Include(ur => ur.User) on role.Id equals usrl.RoleId
+                where usrl.User.PersonalId.Equals(user.Id)
                 select new { Role = role, isMain = usrl.IsMain };
 
             user.Roles = roles.Select(role => Mapper.Map(role.Role)).ToArray();
@@ -94,7 +94,7 @@ namespace UserManager.AppService.Services
                 where usr.Id.Equals(id)
                 select new UserDTO
                 {
-                    Id = usr.Id,
+                    Id = usr.PersonalId,
                     FirstName = usr.FirstName,
                     LastName = usr.LastName,
                     Organization = Mapper.Map(usr.Organization),
@@ -117,11 +117,19 @@ namespace UserManager.AppService.Services
             return user;
         }
 
-        public string Create(FrontendUserDTO dto, string id)
+        public string Create(FrontendUserDTO dto)
         {
-            if (_context.Users.FirstOrDefault(u => u.Id.Equals(id)) != null)
+            if (string.IsNullOrWhiteSpace(dto.Id))
             {
-                throw new ArgumentException($"{id} already existed");
+                throw new ArgumentException("personal id missing");
+            }
+
+            var personalId = dto.Id;
+            var id = Guid.NewGuid();
+
+            if (_context.Users.FirstOrDefault(u => u.PersonalId.Equals(personalId)) != null)
+            {
+                throw new ArgumentException($"{personalId} already existed");
             }
 
             var orgid = dto.OrganizationId;
@@ -221,6 +229,8 @@ namespace UserManager.AppService.Services
             {
                 Id = id,
 
+                PersonalId = personalId,
+
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 ProfileImage = dto.ProfileImage,
@@ -248,13 +258,13 @@ namespace UserManager.AppService.Services
                 throw new ArgumentException(dbe.InnerException.Message);
             }
 
-            return id;
+            return personalId;
         }
 
         public string Update(FrontendUserDTO dto)
         {
-            var id = dto.Id;
-            var oldUser = _context.Users.Include(usr => usr.Organization).FirstOrDefault(u => u.Id.Equals(id));
+            var personalId = dto.Id;
+            var oldUser = _context.Users.Include(usr => usr.Organization).FirstOrDefault(u => u.PersonalId.Equals(personalId));
             if (oldUser == null)
             {
                 throw new KeyNotFoundException();
@@ -294,7 +304,7 @@ namespace UserManager.AppService.Services
                     grDTO => new UserGroup()
                     {
                         GroupId = grDTO.Id,
-                        UserId = id,
+                        UserId = oldUser.Id,
                         IsMain = grDTO.IsMain
                     }
                     )
@@ -306,7 +316,7 @@ namespace UserManager.AppService.Services
                     rlDTO => new UserRole()
                     {
                         RoleId = rlDTO.Id,
-                        UserId = id,
+                        UserId = oldUser.Id,
                         IsMain = rlDTO.IsMain
                     }
                     )
@@ -340,24 +350,24 @@ namespace UserManager.AppService.Services
                 throw new ArgumentException(ex.Message);
             }
 
-            return id;
+            return personalId;
         }
 
         public bool Delete(string id)
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(usr => usr.Id.Equals(id));
+                var user = _context.Users.FirstOrDefault(usr => usr.PersonalId.Equals(id));
 
                 if (user == null)
                 {
                     return false;
                 }
 
-                var userGroups = _context.UserGroups.Where(usgr => usgr.UserId.Equals(id)).ToArray();
+                var userGroups = _context.UserGroups.Include(usgr => usgr.User).Where(usgr => usgr.User.PersonalId.Equals(id)).ToArray();
                 _context.UserGroups.RemoveRange(userGroups);
 
-                var userRoles = _context.UserRoles.Where(usrl => usrl.UserId.Equals(id)).ToArray();
+                var userRoles = _context.UserRoles.Include(usrl => usrl.User).Where(usrl => usrl.User.PersonalId.Equals(id)).ToArray();
                 _context.UserRoles.RemoveRange(userRoles);
 
                 _context.Users.Remove(user);

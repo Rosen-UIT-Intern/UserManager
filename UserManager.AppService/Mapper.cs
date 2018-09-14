@@ -13,7 +13,7 @@ namespace UserManager.AppService.Utility
         {
             return new UserDTO
             {
-                Id = user.Id,
+                Id = user.PersonalId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ProfileImage = user.ProfileImage,
@@ -30,7 +30,7 @@ namespace UserManager.AppService.Utility
         {
             var userDTO = new UserDTO
             {
-                Id = user.Id,
+                Id = user.PersonalId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ProfileImage = user.ProfileImage,

@@ -22,11 +22,11 @@ namespace UserManager.AppService.Test.E2ETest.UserController
 {
     public class UserControllerTest : E2EControllerTestFixture
     {
-        private readonly ITestOutputHelper output;
+        private readonly ITestOutputHelper _output;
 
         public UserControllerTest(ITestOutputHelper output) : base(5002)
         {
-            this.output = output;
+            _output = output;
         }
 
         [Fact]
@@ -38,6 +38,7 @@ namespace UserManager.AppService.Test.E2ETest.UserController
             var seed = SeedData.Instance;
             FrontendUserDTO newUser = new FrontendUserDTO()
             {
+                Id = "creat",
                 FirstName = "first name",
                 LastName = "last name",
                 ProfileImage = "image",
@@ -74,10 +75,18 @@ namespace UserManager.AppService.Test.E2ETest.UserController
 
                 var userId = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                output.WriteLine("created user's id: {0}", userId);
+                _output.WriteLine("created user's id: {0}", userId);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+                {
+                    HttpResponseMessage verifyResult = client.GetAsync($"/api/user/{newUser.Id}").GetAwaiter().GetResult();
 
-                client.DeleteAsync($"/api/user/{userId}").GetAwaiter().GetResult();
+                    var user = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    _output.WriteLine(user);
+                }
+
+                var delResult = client.DeleteAsync($"/api/user/{userId}").GetAwaiter().GetResult();
+                _output.WriteLine(delResult.StatusCode.ToString());
+                Assert.Equal(HttpStatusCode.OK, delResult.StatusCode);
             }
         }
 
@@ -90,6 +99,7 @@ namespace UserManager.AppService.Test.E2ETest.UserController
             var seed = SeedData.Instance;
             FrontendUserDTO newUser = new FrontendUserDTO()
             {
+                Id = "delet",
                 FirstName = "first name",
                 LastName = "last name",
                 ProfileImage = "image",
@@ -125,7 +135,7 @@ namespace UserManager.AppService.Test.E2ETest.UserController
                 HttpResponseMessage result = client.PostAsJsonAsync("/api/user", newUser).GetAwaiter().GetResult();
 
                 var userId = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
+                _output.WriteLine(userId);
                 var deleteResult = client.DeleteAsync($"/api/user/{userId}").GetAwaiter().GetResult();
                 Assert.Equal(HttpStatusCode.OK, deleteResult.StatusCode);
             }

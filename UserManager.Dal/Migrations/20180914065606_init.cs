@@ -54,7 +54,8 @@ namespace UserManager.Dal.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    PersonalId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     ProfileImage = table.Column<string>(nullable: true),
@@ -79,7 +80,7 @@ namespace UserManager.Dal.Migrations
                 name: "UserGroups",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     GroupId = table.Column<Guid>(nullable: false),
                     IsMain = table.Column<bool>(nullable: false)
                 },
@@ -104,7 +105,7 @@ namespace UserManager.Dal.Migrations
                 name: "UserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     RoleId = table.Column<Guid>(nullable: false),
                     IsMain = table.Column<bool>(nullable: false)
                 },
@@ -157,23 +158,23 @@ namespace UserManager.Dal.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Email", "FirstName", "LastName", "Mobile", "OrganizationId", "PrivatePhone", "ProfileImage", "WorkPhone" },
-                values: new object[] { "12345", "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]", "Minh", "Nguyen Le", "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]", new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]", "image", "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]" });
+                columns: new[] { "Id", "Email", "FirstName", "LastName", "Mobile", "OrganizationId", "PersonalId", "PrivatePhone", "ProfileImage", "WorkPhone" },
+                values: new object[] { new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]", "Minh", "Nguyen Le", "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]", new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), "12345", "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]", "image", "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]" });
 
             migrationBuilder.InsertData(
                 table: "UserGroups",
                 columns: new[] { "UserId", "GroupId", "IsMain" },
-                values: new object[] { "12345", new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), true });
+                values: new object[] { new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), true });
 
             migrationBuilder.InsertData(
                 table: "UserGroups",
                 columns: new[] { "UserId", "GroupId", "IsMain" },
-                values: new object[] { "12345", new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), false });
+                values: new object[] { new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), false });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "UserId", "RoleId", "IsMain" },
-                values: new object[] { "12345", new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), true });
+                values: new object[] { new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), true });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_OrganizationId",

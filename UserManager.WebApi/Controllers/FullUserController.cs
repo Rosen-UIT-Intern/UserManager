@@ -43,11 +43,15 @@ namespace UserManager.WebApi.Controllers
         [Produces("text/plain")]
         public IActionResult CreateUser([FromBody] FrontendUserDTO dto)
         {
-            var id = _randomIdGenerator.GetId(5);
+            if (dto == null)
+            {
+                return BadRequest();
+            }
+
             string result = null;
             try
             {
-                result = _service.Create(dto, id);
+                result = _service.Create(dto);
             }
             catch (ArgumentException aex)
             {

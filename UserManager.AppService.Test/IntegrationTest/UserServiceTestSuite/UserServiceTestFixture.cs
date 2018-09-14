@@ -38,7 +38,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
 
             TestCreateUserDTO = GetTestCreateUser();
 
-            service.Create(TestCreateUserDTO, TestUserDTO.Id);
+            service.Create(TestCreateUserDTO);
         }
 
         public void Dispose()

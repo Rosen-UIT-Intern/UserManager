@@ -10,7 +10,7 @@ using UserManager.Dal;
 namespace UserManager.Dal.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20180914034301_init")]
+    [Migration("20180914065606_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,7 +81,7 @@ namespace UserManager.Dal.Migrations
 
             modelBuilder.Entity("UserManager.Dal.User", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Email")
@@ -98,6 +98,8 @@ namespace UserManager.Dal.Migrations
 
                     b.Property<Guid>("OrganizationId");
 
+                    b.Property<string>("PersonalId");
+
                     b.Property<string>("PrivatePhone")
                         .IsRequired();
 
@@ -113,13 +115,13 @@ namespace UserManager.Dal.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = "12345", Email = "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]", FirstName = "Minh", LastName = "Nguyen Le", Mobile = "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]", OrganizationId = new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), PrivatePhone = "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]", ProfileImage = "image", WorkPhone = "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]" }
+                        new { Id = new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), Email = "[{\"address\":\"main email\",\"isMain\":true},{\"address\":\"not mail email\",\"isMain\":false}]", FirstName = "Minh", LastName = "Nguyen Le", Mobile = "[{\"number\":\"333444\",\"isMain\":true},{\"number\":\"555666\",\"isMain\":false}]", OrganizationId = new Guid("c00af6d2-5c26-44cc-8414-dbb420d0f942"), PersonalId = "12345", PrivatePhone = "[{\"number\":\"91011\",\"isMain\":true},{\"number\":\"121314\",\"isMain\":false}]", ProfileImage = "image", WorkPhone = "[{\"number\":\"1234\",\"isMain\":true},{\"number\":\"5678\",\"isMain\":false}]" }
                     );
                 });
 
             modelBuilder.Entity("UserManager.Dal.UserGroup", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("UserId");
 
                     b.Property<Guid>("GroupId");
 
@@ -132,14 +134,14 @@ namespace UserManager.Dal.Migrations
                     b.ToTable("UserGroups");
 
                     b.HasData(
-                        new { UserId = "12345", GroupId = new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), IsMain = true },
-                        new { UserId = "12345", GroupId = new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), IsMain = false }
+                        new { UserId = new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), GroupId = new Guid("3777ec35-2393-4053-95ad-cc587d87a3e3"), IsMain = true },
+                        new { UserId = new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), GroupId = new Guid("ab2ace08-2daf-4422-9242-293025aab9f6"), IsMain = false }
                     );
                 });
 
             modelBuilder.Entity("UserManager.Dal.UserRole", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("UserId");
 
                     b.Property<Guid>("RoleId");
 
@@ -152,7 +154,7 @@ namespace UserManager.Dal.Migrations
                     b.ToTable("UserRoles");
 
                     b.HasData(
-                        new { UserId = "12345", RoleId = new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), IsMain = true }
+                        new { UserId = new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"), RoleId = new Guid("d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba"), IsMain = true }
                     );
                 });
 

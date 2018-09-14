@@ -43,9 +43,9 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             (TestUser1, TestUser2, TestUser3) = GetTestUser();
 
             UserService userService = new UserService(context);
-            userService.Create(TestUser1, TestUser1Id);
-            userService.Create(TestUser2, TestUser2Id);
-            userService.Create(TestUser3, TestUser3Id);
+            userService.Create(TestUser1);
+            userService.Create(TestUser2);
+            userService.Create(TestUser3);
         }
 
         private (FrontendUserDTO user1, FrontendUserDTO user2, FrontendUserDTO user3) GetTestUser()
@@ -54,6 +54,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
 
             var user1 = new FrontendUserDTO()
             {
+                Id = "test1",
                 FirstName = "minh1",
                 LastName = "nguyen le",
                 ProfileImage = "image",
@@ -83,6 +84,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             };
             var user2 = new FrontendUserDTO()
             {
+                Id = "test2",
                 FirstName = "minh2",
                 LastName = "nguyen le",
                 ProfileImage = "image",
@@ -112,6 +114,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             };
             var user3 = new FrontendUserDTO()
             {
+                Id = "test3",
                 FirstName = "lan1",
                 LastName = "nguyen le",
                 ProfileImage = "image",

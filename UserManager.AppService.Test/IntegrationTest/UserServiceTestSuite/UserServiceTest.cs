@@ -35,16 +35,18 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 var service = new UserService(context);
 
                 //create a user and insert into db
-                //UserDTO userDTO = fixture.TestUserDTO;
-                var createUserDTOId = fixture.TestUserDTO.Id;
+                var createUserDTOId = fixture.TestCreateUserDTO.Id;
                 FrontendUserDTO createUserDTO = fixture.TestCreateUserDTO;
 
                 try
                 {
-                    Assert.Equal(createUserDTOId, service.Create(createUserDTO, createUserDTOId));
+                    var newId = service.Create(createUserDTO);
+                    Assert.Equal(createUserDTOId, newId);
+                    _output.WriteLine(newId);
                 }
                 catch (ArgumentException aex)
                 {
+                    Assert.True(false, aex.Message);
                     _output.WriteLine(aex.Message);
                 }
             }
@@ -61,7 +63,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 //create a user and insert into db
                 var createUserDTOId = fixture.TestUserDTO.Id;
                 FrontendUserDTO createUserDTO = fixture.TestCreateUserDTO;
-                var userId = service.Create(createUserDTO, createUserDTOId);
+                var userId = service.Create(createUserDTO);
 
                 //update some user's info
                 createUserDTO.FirstName = "changed first name";
@@ -98,7 +100,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 var createUserDTOId = fixture.TestUserDTO.Id;
                 FrontendUserDTO createUserDTO = fixture.TestCreateUserDTO;
 
-                service.Create(createUserDTO, createUserDTOId);
+                service.Create(createUserDTO);
 
                 Assert.True(service.Delete(createUserDTOId));
             }

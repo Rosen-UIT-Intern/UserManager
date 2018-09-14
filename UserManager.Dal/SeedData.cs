@@ -85,7 +85,8 @@ namespace UserManager.Dal
             #region user
             User = new User()
             {
-                Id = "12345",
+                Id = new Guid("14bf9bbf-f998-4f15-840f-d864c45444ae"),
+                PersonalId = "12345",
                 FirstName = "Minh",
                 LastName = "Nguyen Le",
                 OrganizationId = RosenOrg.Id,

@@ -28,12 +28,11 @@ namespace UserManager.Contract
         UserDTO GetLightUser(string id);
 
         /// <summary>
-        /// Create a new user, user's id will be generated
+        /// Create a new user
         /// </summary>
         /// <param name="dto">user's info</param>
-        /// <param name="id">user's id</param>
         /// <returns>user's id if success, else the error message</returns>
-        string Create(FrontendUserDTO dto,string id);
+        string Create(FrontendUserDTO dto);
 
         /// <summary>
         /// Update a user's info

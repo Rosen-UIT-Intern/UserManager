@@ -21,7 +21,7 @@ namespace UserManager.AppService.Test
 
             var testUserDTO = Mapper.MapLight(testUser);
 
-            Assert.Equal(testUser.Id, testUserDTO.Id);
+            Assert.Equal(testUser.PersonalId, testUserDTO.Id);
             Assert.Equal(testUser.FirstName, testUserDTO.FirstName);
             Assert.Equal(testUser.LastName, testUserDTO.LastName);
             Assert.Equal(testUser.ProfileImage, testUserDTO.ProfileImage);

@@ -6,7 +6,10 @@ namespace UserManager.Dal
 {
     public class User
     {
-        public string Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
+
+        public string PersonalId { get; set; }
 
         [Required]
         public string FirstName { get; set; }

@@ -37,7 +37,7 @@ namespace UserManager.AppService.Services
                 :
                 from user in users
                 where
-                    user.Id.Contains(querry.Id)
+                    user.PersonalId.Contains(querry.Id)
                 select user
                 ;
         }
