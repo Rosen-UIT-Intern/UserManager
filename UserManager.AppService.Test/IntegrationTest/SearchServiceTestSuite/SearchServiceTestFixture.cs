@@ -20,9 +20,9 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
     {
         private readonly UserDbContext context;
         public readonly SearchService service;
-        public readonly FrontendUserDTO TestUser1;
-        public readonly FrontendUserDTO TestUser2;
-        public readonly FrontendUserDTO TestUser3;
+        public readonly CreateUserDTO TestUser1;
+        public readonly CreateUserDTO TestUser2;
+        public readonly CreateUserDTO TestUser3;
         public readonly string TestUser1Id = "test1";
         public readonly string TestUser2Id = "test2";
         public readonly string TestUser3Id = "test3";
@@ -48,18 +48,18 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             userService.Create(TestUser3, TestUser3Id);
         }
 
-        private (FrontendUserDTO user1, FrontendUserDTO user2, FrontendUserDTO user3) GetTestUser()
+        private (CreateUserDTO user1, CreateUserDTO user2, CreateUserDTO user3) GetTestUser()
         {
             SeedData seedData = SeedData.Instance;
 
-            var user1 = new FrontendUserDTO()
+            var user1 = new CreateUserDTO()
             {
                 FirstName = "minh1",
                 LastName = "nguyen le",
                 ProfileImage = "image",
                 OrganizationId = seedData.RosenOrg.Id,
-                Groups = new[] { new FrontendGroupDTO(seedData.RosenTechGroup.Id, true) },
-                Roles = new[] { new FrontendRoleDTO(seedData.EngineerRole.Id, true) },
+                Groups = new[] { (seedData.RosenTechGroup.Id, true) },
+                Roles = new[] { (seedData.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},
@@ -81,14 +81,14 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                     new Mobile{ Number="not main mobile",IsMain =false },
                 }
             };
-            var user2 = new FrontendUserDTO()
+            var user2 = new CreateUserDTO()
             {
                 FirstName = "minh2",
                 LastName = "nguyen le",
                 ProfileImage = "image",
                 OrganizationId = seedData.RosenOrg.Id,
-                Groups = new[] { new FrontendGroupDTO(seedData.RosenHRGroup.Id, true) },
-                Roles = new[] { new FrontendRoleDTO(seedData.HRLeadRole.Id, true) },
+                Groups = new[] { (seedData.RosenHRGroup.Id, true) },
+                Roles = new[] { (seedData.HRLeadRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},
@@ -110,14 +110,14 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
                     new Mobile{ Number="not main mobile",IsMain =false },
                 }
             };
-            var user3 = new FrontendUserDTO()
+            var user3 = new CreateUserDTO()
             {
                 FirstName = "lan1",
                 LastName = "nguyen le",
                 ProfileImage = "image",
                 OrganizationId = seedData.UITOrg.Id,
-                Groups = new[] { new FrontendGroupDTO(seedData.UITSEGroup.Id, true) },
-                Roles = new[] { new FrontendRoleDTO(seedData.EngineerRole.Id, true) },
+                Groups = new[] { (seedData.UITSEGroup.Id, true) },
+                Roles = new[] { (seedData.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
                     new Email{ Address="main email", IsMain=true},

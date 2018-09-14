@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using UserManager.Contract;
@@ -42,12 +41,8 @@ namespace UserManager.WebApi.Controllers
 
         [HttpPost]
         [Produces("text/plain")]
-        public IActionResult CreateUser([FromBody] FrontendUserDTO dto)
+        public IActionResult CreateUser([FromBody] CreateUserDTO dto)
         {
-            if (dto == null)
-            {
-                return BadRequest();
-            }
             var id = _randomIdGenerator.GetId(5);
             string result = null;
             try
@@ -61,23 +56,10 @@ namespace UserManager.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(string id, [FromBody] FrontendUserDTO dto)
+        [HttpPut]
+        public IActionResult UpdateUser([FromBody] UserDTO dto)
         {
-            string result = null;
-            try
-            {
-                result = _service.Update(dto, id);
-            }
-            catch (KeyNotFoundException knfex)
-            {
-                return NotFound(id);
-            }
-            catch (ArgumentException aex)
-            {
-                return BadRequest(aex.Message);
-            }
-            return Ok(result);
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]

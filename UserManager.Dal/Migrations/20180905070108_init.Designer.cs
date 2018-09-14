@@ -10,7 +10,7 @@ using UserManager.Dal;
 namespace UserManager.Dal.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20180913065407_init")]
+    [Migration("20180905070108_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

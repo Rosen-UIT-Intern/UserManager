@@ -33,14 +33,14 @@ namespace UserManager.Contract
         /// <param name="dto">user's info</param>
         /// <param name="id">user's id</param>
         /// <returns>user's id if success, else the error message</returns>
-        string Create(FrontendUserDTO dto, string id);
+        string Create(CreateUserDTO dto,string id);
 
         /// <summary>
         /// Update a user's info
         /// </summary>
         /// <param name="dto">user's new info</param>
         /// <returns>user's id if success, else the error message</returns>
-        string Update(FrontendUserDTO dto, string id);
+        string Update(UserDTO dto);
 
         /// <summary>
         /// Delete a user
