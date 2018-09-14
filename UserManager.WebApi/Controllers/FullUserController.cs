@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using UserManager.Contract;
@@ -61,9 +62,28 @@ namespace UserManager.WebApi.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateUser([FromBody] UserDTO dto)
+        [Produces("text/plain")]
+        public IActionResult UpdateUser([FromBody] FrontendUserDTO dto)
         {
-            throw new NotImplementedException();
+            if (dto == null)
+            {
+                return BadRequest();
+            }
+
+            string result = null;
+            try
+            {
+                result = _service.Update(dto);
+            }
+            catch (ArgumentException aex)
+            {
+                return BadRequest(aex.Message);
+            }
+            catch (KeyNotFoundException knfex)
+            {
+                return NotFound(dto.Id);
+            }
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
