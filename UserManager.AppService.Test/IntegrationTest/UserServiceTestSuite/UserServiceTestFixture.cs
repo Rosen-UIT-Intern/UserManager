@@ -92,6 +92,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
             SeedData seedData = SeedData.Instance;
             return new FrontendUserDTO()
             {
+                Id = "test1",
                 FirstName = "first",
                 LastName = "last",
                 ProfileImage = "image",

@@ -74,6 +74,9 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                     var tttId = service.Update(createUserDTO);
                     Assert.Equal(createUserDTOId, tttId);
                     _output.WriteLine(tttId);
+
+                    var updatedUserDTO = service.GetUser(tttId);
+                    _output.WriteLine(JsonConvert.SerializeObject(updatedUserDTO));
                 }
                 catch (ArgumentException aex)
                 {
