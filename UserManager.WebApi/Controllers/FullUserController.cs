@@ -41,7 +41,7 @@ namespace UserManager.WebApi.Controllers
 
         [HttpPost]
         [Produces("text/plain")]
-        public IActionResult CreateUser([FromBody] CreateUserDTO dto)
+        public IActionResult CreateUser([FromBody] FrontendUserDTO dto)
         {
             var id = _randomIdGenerator.GetId(5);
             string result = null;

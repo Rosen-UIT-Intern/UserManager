@@ -37,11 +37,46 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 //create a user and insert into db
                 //UserDTO userDTO = fixture.TestUserDTO;
                 var createUserDTOId = fixture.TestUserDTO.Id;
-                CreateUserDTO createUserDTO = fixture.TestCreateUserDTO;
+                FrontendUserDTO createUserDTO = fixture.TestCreateUserDTO;
 
                 try
                 {
                     Assert.Equal(createUserDTOId, service.Create(createUserDTO, createUserDTOId));
+                }
+                catch (ArgumentException aex)
+                {
+                    _output.WriteLine(aex.Message);
+                }
+            }
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestUpdateUser()
+        {
+            using (var context = InitDbContext("update_user"))
+            {
+                var service = new UserService(context);
+                var seed = SeedData.Instance;
+                //create a user and insert into db
+                var createUserDTOId = fixture.TestUserDTO.Id;
+                FrontendUserDTO createUserDTO = fixture.TestCreateUserDTO;
+                var userId = service.Create(createUserDTO, createUserDTOId);
+
+                //update some user's info
+                createUserDTO.FirstName = "changed first name";
+                createUserDTO.LastName = "changed last name";
+                createUserDTO.Groups = new[] { new FrontendGroupDTO(seed.RosenHRGroup.Id, true) };
+                createUserDTO.Roles = new[] { new FrontendRoleDTO(seed.HRLeadRole.Id, true) };
+
+                try
+                {
+                    var tttId = service.Update(createUserDTO);
+                    Assert.Equal(createUserDTOId, tttId);
+                    _output.WriteLine(tttId);
+
+                    var updatedUserDTO = service.GetUser(tttId);
+                    _output.WriteLine(JsonConvert.SerializeObject(updatedUserDTO));
                 }
                 catch (ArgumentException aex)
                 {
@@ -61,7 +96,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 //create a user and insert into db
                 //UserDTO userDTO = fixture.TestUserDTO;
                 var createUserDTOId = fixture.TestUserDTO.Id;
-                CreateUserDTO createUserDTO = fixture.TestCreateUserDTO;
+                FrontendUserDTO createUserDTO = fixture.TestCreateUserDTO;
 
                 service.Create(createUserDTO, createUserDTOId);
 

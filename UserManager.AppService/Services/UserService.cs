@@ -117,7 +117,7 @@ namespace UserManager.AppService.Services
             return user;
         }
 
-        public string Create(CreateUserDTO dto, string id)
+        public string Create(FrontendUserDTO dto, string id)
         {
             if (_context.Users.FirstOrDefault(u => u.Id.Equals(id)) != null)
             {
@@ -154,7 +154,7 @@ namespace UserManager.AppService.Services
             //make sure that one and only one group is main
             try
             {
-                dto.Groups.Single(grDTO => grDTO.isMain);
+                dto.Groups.Single(grDTO => grDTO.IsMain);
             }
             catch (InvalidOperationException ex)
             {
@@ -164,7 +164,7 @@ namespace UserManager.AppService.Services
             //make sure that one and only one role is main
             try
             {
-                dto.Roles.Single(rlDTO => rlDTO.isMain);
+                dto.Roles.Single(rlDTO => rlDTO.IsMain);
             }
             catch (InvalidOperationException ex)
             {
@@ -186,9 +186,9 @@ namespace UserManager.AppService.Services
                 dto.Groups.Select(
                     grDTO => new UserGroup()
                     {
-                        GroupId = grDTO.GroupId,
+                        GroupId = grDTO.Id,
                         UserId = id,
-                        IsMain = grDTO.isMain
+                        IsMain = grDTO.IsMain
                     }
                     )
                     .ToArray()
@@ -209,9 +209,9 @@ namespace UserManager.AppService.Services
                 dto.Roles.Select(
                     rlDTO => new UserRole()
                     {
-                        RoleId = rlDTO.RoleId,
+                        RoleId = rlDTO.Id,
                         UserId = id,
-                        IsMain = rlDTO.isMain
+                        IsMain = rlDTO.IsMain
                     }
                     )
                     .ToArray()
@@ -251,9 +251,96 @@ namespace UserManager.AppService.Services
             return id;
         }
 
-        public string Update(UserDTO dto)
+        public string Update(FrontendUserDTO dto)
         {
-            throw new System.NotImplementedException();
+            var id = dto.Id;
+            var oldUser = _context.Users.Include(usr => usr.Organization).FirstOrDefault(u => u.Id.Equals(id));
+            if (oldUser == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            var orgid = dto.OrganizationId;
+
+            //check org exist
+            Organization org = _context.Organizations.FirstOrDefault(o => o.Id.Equals(orgid));
+            if (org == null)
+            {
+                throw new ArgumentException($"organization {orgid} does not exist");
+            }
+
+            //make sure that one and only one group is main
+            try
+            {
+                dto.Groups.Single(grDTO => grDTO.IsMain);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ArgumentException("one and only one main group must exist");
+            }
+
+            //make sure that one and only one role is main
+            try
+            {
+                dto.Roles.Single(rlDTO => rlDTO.IsMain);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ArgumentException("one and only one main role must exist");
+            }
+
+            var userGroups =
+                dto.Groups.Select(
+                    grDTO => new UserGroup()
+                    {
+                        GroupId = grDTO.Id,
+                        UserId = id,
+                        IsMain = grDTO.IsMain
+                    }
+                    )
+                    .ToArray()
+                ;
+
+            var userRoles =
+                dto.Roles.Select(
+                    rlDTO => new UserRole()
+                    {
+                        RoleId = rlDTO.Id,
+                        UserId = id,
+                        IsMain = rlDTO.IsMain
+                    }
+                    )
+                    .ToArray()
+                ;
+
+            #region update user
+
+            oldUser.FirstName = dto.FirstName;
+            oldUser.LastName = dto.LastName;
+            oldUser.ProfileImage = dto.ProfileImage;
+
+            oldUser.OrganizationId = org.Id;
+
+            oldUser.Email = JsonConvert.SerializeObject(dto.Email);
+            oldUser.WorkPhone = JsonConvert.SerializeObject(dto.WorkPhone);
+            oldUser.PrivatePhone = JsonConvert.SerializeObject(dto.PrivatePhone);
+            oldUser.Mobile = JsonConvert.SerializeObject(dto.Mobile);
+
+            oldUser.UserGroups = userGroups.ToList();
+            oldUser.UserRoles = userRoles.ToList();
+
+            #endregion
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+
+            return id;
         }
 
         public bool Delete(string id)
