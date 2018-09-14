@@ -74,8 +74,8 @@ namespace UserManager.AppService.Test.E2ETest.UserController
 
                 var userId = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 output.WriteLine("created user's id: {0}", userId);
+                Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
                 client.DeleteAsync($"/api/user/{userId}").GetAwaiter().GetResult();
             }
