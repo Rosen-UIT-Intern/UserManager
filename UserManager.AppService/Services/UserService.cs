@@ -50,6 +50,8 @@ namespace UserManager.AppService.Services
                     Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile)
                 }
                 )
+                //.ToList()
+                .ResolveGroupAndRole(_context)
                 .ToList()
                 ;
 
@@ -58,33 +60,7 @@ namespace UserManager.AppService.Services
                 return null;
             }
 
-            var user = users[0];
-
-            var groups =
-                from gr in _context.Groups.Include(g => g.Organization)
-                join usgr in _context.UserGroups.Include(ug => ug.User) on gr.Id equals usgr.GroupId
-                where usgr.User.PersonalId.Equals(user.Id)
-                select new { Group = gr, isMain = usgr.IsMain };
-
-            var tt = groups.ToArray();
-
-            user.Groups = groups.Select(gr => Mapper.Map(gr.Group)).ToArray();
-
-            var mainGroup = groups.First(g => g.isMain).Group;
-            user.MainGroup = Mapper.Map(mainGroup);
-
-            var roles =
-                from role in _context.Roles
-                join usrl in _context.UserRoles.Include(ur => ur.User) on role.Id equals usrl.RoleId
-                where usrl.User.PersonalId.Equals(user.Id)
-                select new { Role = role, isMain = usrl.IsMain };
-
-            user.Roles = roles.Select(role => Mapper.Map(role.Role)).ToArray();
-
-            var mainRole = roles.First(r => r.isMain).Role;
-            user.MainRole = Mapper.Map(mainRole);
-
-            return user;
+            return users[0];
         }
 
         public UserDTO GetLightUser(string id)

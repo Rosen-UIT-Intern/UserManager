@@ -20,27 +20,34 @@ namespace UserManager.AppService
         {
             return users.Select(user =>
             {
-                var groups =
+                user.Groups =
+                    (
                     from gr in context.Groups.Include(g => g.Organization)
                     join usgr in context.UserGroups.Include(ug => ug.User) on gr.Id equals usgr.GroupId
                     where usgr.User.PersonalId.Equals(user.Id)
-                    select new { Group = gr, isMain = usgr.IsMain };
+                    select new GroupDTO
+                    {
+                        Id = gr.Id,
+                        Name = gr.Name,
+                        Organization = Mapper.Map(gr.Organization),
+                        IsMain = usgr.IsMain
+                    }
+                    )
+                    .ToArray();
 
-                user.Groups = groups.Select(group => Mapper.Map(group.Group)).ToArray();
-
-                var mainGroup = groups.First(g => g.isMain).Group;
-                user.MainGroup = Mapper.Map(mainGroup);
-
-                var roles =
+                user.Roles =
+                    (
                     from role in context.Roles
                     join usrl in context.UserRoles.Include(ur => ur.User) on role.Id equals usrl.RoleId
                     where usrl.User.PersonalId.Equals(user.Id)
-                    select new { role, isMain = usrl.IsMain };
-
-                user.Roles = roles.Select(role => Mapper.Map(role.role)).ToArray();
-
-                var mainRole = roles.First(r => r.isMain).role;
-                user.MainRole = Mapper.Map(mainRole);
+                    select new RoleDTO
+                    {
+                        Id = role.Id,
+                        Name = role.Name,
+                        IsMain = usrl.IsMain
+                    }
+                    )
+                    .ToArray();
 
                 return user;
             });

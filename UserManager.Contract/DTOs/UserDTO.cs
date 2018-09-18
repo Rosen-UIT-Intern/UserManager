@@ -17,10 +17,8 @@ namespace UserManager.Contract.DTOs
 
         public OrganizationDTO Organization { get; set; }
 
-        public GroupDTO MainGroup { get; set; }
         public GroupDTO[] Groups { get; set; }
 
-        public RoleDTO MainRole { get; set; }
         public RoleDTO[] Roles { get; set; }
     }
 

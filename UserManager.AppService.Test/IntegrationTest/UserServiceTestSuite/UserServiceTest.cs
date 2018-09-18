@@ -135,11 +135,9 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
             Assert.Equal(userDTO.Organization.Id, userDTOfromDb.Organization.Id);
 
             //confirm that user's group is saved correctly
-            Assert.Equal(userDTO.MainGroup.Id, userDTOfromDb.MainGroup.Id);
             Assert.Equal(userDTO.Groups.Length, userDTOfromDb.Groups.Length);
 
             //confirm that user's role is saved correctly
-            Assert.Equal(userDTO.MainRole.Id, userDTOfromDb.MainRole.Id);
             Assert.Equal(userDTO.Roles.Length, userDTOfromDb.Roles.Length);
         }
     }

@@ -7,5 +7,6 @@ namespace UserManager.Contract.DTOs
         public Guid Id { get; set; }
         public string Name { get; set; }
         public OrganizationDTO Organization { get; set; }
+        public bool IsMain { get; set; }
     }
 }

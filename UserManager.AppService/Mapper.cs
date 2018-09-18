@@ -47,8 +47,12 @@ namespace UserManager.AppService.Utility
 
             }
 
-            userDTO.MainGroup = Mapper.Map(mainGroup.Group);
-            userDTO.Groups = user.UserGroups.Select(usgr => Mapper.Map(usgr.Group)).ToArray();
+            userDTO.Groups = user.UserGroups.Select(usgr =>
+            {
+                var grp = Mapper.Map(usgr.Group);
+                grp.IsMain = usgr.IsMain;
+                return grp;
+            }).ToArray();
 
             var mainRole = user.UserRoles.FirstOrDefault(usrl => usrl.IsMain);
             if (mainRole == null)
@@ -56,8 +60,12 @@ namespace UserManager.AppService.Utility
 
             }
 
-            userDTO.MainRole = Mapper.Map(mainRole.Role);
-            userDTO.Roles = user.UserRoles.Select(usrl => Mapper.Map(usrl.Role)).ToArray();
+            userDTO.Roles = user.UserRoles.Select(usrl =>
+            {
+                var role = Mapper.Map(usrl.Role);
+                role.IsMain = usrl.IsMain;
+                return role;
+            }).ToArray();
 
             return userDTO;
         }

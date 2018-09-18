@@ -59,9 +59,7 @@ namespace UserManager.AppService.Test.IntegrationTest.UserServiceTestSuite
                 LastName = "last",
                 ProfileImage = "image",
                 Organization = Mapper.Map(seedData.RosenOrg),
-                MainGroup = Mapper.Map(group),
                 Groups = new[] { Mapper.Map(group) },
-                MainRole = Mapper.Map(seedData.EngineerRole),
                 Roles = new[] { Mapper.Map(seedData.EngineerRole) },
                 Email = new Email[]
                 {

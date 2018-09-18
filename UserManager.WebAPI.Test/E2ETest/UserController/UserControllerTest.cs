@@ -47,23 +47,23 @@ namespace UserManager.AppService.Test.E2ETest.UserController
                 Roles = new[] { new FrontendRoleDTO(seed.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
-                    new Email{ Address="main email", IsMain=true},
-                    new Email{ Address="not main email", IsMain=false}
+                    new Email{ Address="main_email@email.com", IsMain=true},
+                    new Email{ Address="not_main_email@email.com", IsMain=false}
                 },
                 WorkPhone = new Phone[]
                 {
-                    new Phone{ Number="main work phone",IsMain=true},
-                    new Phone{ Number="not main work phone",IsMain=false},
+                    new Phone{ Number="+8411111111",IsMain=true},
+                    new Phone{ Number="+8422222222",IsMain=false},
                 },
                 PrivatePhone = new Phone[]
                 {
-                    new Phone{ Number="private phone 1",IsMain=false },
-                    new Phone{ Number="private phone 2",IsMain=false },
+                    new Phone{ Number="+8433333333",IsMain=false },
+                    new Phone{ Number="+8444444444",IsMain=false },
                 },
                 Mobile = new Mobile[]
                 {
-                    new Mobile{ Number="main mobile",IsMain =true },
-                    new Mobile{ Number="not main mobile",IsMain =false },
+                    new Mobile{ Number="+8455555555",IsMain =true },
+                    new Mobile{ Number="+8466666666",IsMain =false },
                 }
             };
 
@@ -108,23 +108,23 @@ namespace UserManager.AppService.Test.E2ETest.UserController
                 Roles = new[] { new FrontendRoleDTO(seed.EngineerRole.Id, true) },
                 Email = new Email[]
                 {
-                    new Email{ Address="main email", IsMain=true},
-                    new Email{ Address="not main email", IsMain=false}
+                    new Email{ Address="main_email@email.com", IsMain=true},
+                    new Email{ Address="not_main_email@email.com", IsMain=false}
                 },
                 WorkPhone = new Phone[]
                 {
-                    new Phone{ Number="main work phone",IsMain=true},
-                    new Phone{ Number="not main work phone",IsMain=false},
+                    new Phone{ Number="+8411111111",IsMain=true},
+                    new Phone{ Number="+8422222222",IsMain=false},
                 },
                 PrivatePhone = new Phone[]
                 {
-                    new Phone{ Number="private phone 1",IsMain=false },
-                    new Phone{ Number="private phone 2",IsMain=false },
+                    new Phone{ Number="+8433333333",IsMain=false },
+                    new Phone{ Number="+8444444444",IsMain=false },
                 },
                 Mobile = new Mobile[]
                 {
-                    new Mobile{ Number="main mobile",IsMain =true },
-                    new Mobile{ Number="not main mobile",IsMain =false },
+                    new Mobile{ Number="+8455555555",IsMain =true },
+                    new Mobile{ Number="+8466666666",IsMain =false },
                 }
             };
 
