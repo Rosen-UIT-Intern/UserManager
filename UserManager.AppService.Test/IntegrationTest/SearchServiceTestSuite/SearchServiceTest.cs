@@ -136,7 +136,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
         {
             var service = fixture.service;
 
-            #region search by org name "Rosen"
+            #region search by org id "Rosen"
             {
                 QuerryDTO querryDTO = new QuerryDTO()
                 {
@@ -155,7 +155,7 @@ namespace UserManager.AppService.Test.IntegrationTest.SearchServiceTestSuite
             }
             #endregion
 
-            #region search by org name "UIT"
+            #region search by org id "UIT"
             {
                 QuerryDTO querryDTO = new QuerryDTO()
                 {
