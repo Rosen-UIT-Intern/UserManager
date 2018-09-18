@@ -1,4 +1,6 @@
-﻿namespace UserManager.Contract.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UserManager.Contract.DTOs
 {
     public class UserDTO
     {
@@ -24,7 +26,10 @@
 
     public class Email
     {
+        [Required(ErrorMessage = "The Email's Address field is required")]
+        [EmailAddress(ErrorMessage = "The Email's Address field must be of valid email address")]
         public string Address { get; set; }
+        [Required(ErrorMessage = "Email's IsMain field is required")]
         public bool IsMain { get; set; }
 
         public override bool Equals(object obj)
@@ -48,7 +53,10 @@
 
     public class Phone
     {
+        [Required(ErrorMessage = "The Phone's Number field is required")]
+        [Phone(ErrorMessage = "The Phone's Number field must be of valid phone number")]
         public string Number { get; set; }
+        [Required(ErrorMessage = "The Phone's IsMain field is required")]
         public bool IsMain { get; set; }
 
         public override bool Equals(object obj)
@@ -72,7 +80,10 @@
 
     public class Mobile
     {
+        [Required(ErrorMessage = "The Mobile's Number field is required")]
+        [Phone]
         public string Number { get; set; }
+        [Required(ErrorMessage = "The Mobile's IsMain field is required")]
         public bool IsMain { get; set; }
 
         public override bool Equals(object obj)

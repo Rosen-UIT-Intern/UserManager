@@ -119,17 +119,12 @@ namespace UserManager.AppService.Services
 
         public string Create(FrontendUserDTO dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Id))
-            {
-                throw new ArgumentException("personal id missing");
-            }
-
             var personalId = dto.Id;
             var id = Guid.NewGuid();
 
             if (_context.Users.FirstOrDefault(u => u.PersonalId.Equals(personalId)) != null)
             {
-                throw new ArgumentException($"{personalId} already existed");
+                throw new ArgumentException($"personal Id {personalId} already existed");
             }
 
             var orgid = dto.OrganizationId;
