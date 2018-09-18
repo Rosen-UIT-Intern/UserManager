@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using UserManager.Contract;
 using UserManager.Contract.DTOs;
+using UserManager.WebApi.ValidateFilter;
 
 namespace UserManager.WebApi.Controllers
 {
     [EnableCors("CorsPolicy")]
     [Produces("application/json")]
     [Route("api/user")]
+    [ValidateModel]
     public class FullUserController : Controller
     {
         private readonly IUserService _service;
@@ -44,11 +46,6 @@ namespace UserManager.WebApi.Controllers
         [Produces("text/plain")]
         public IActionResult CreateUser([FromBody] FrontendUserDTO dto)
         {
-            if (dto == null)
-            {
-                return BadRequest();
-            }
-
             string result = null;
             try
             {
@@ -65,11 +62,6 @@ namespace UserManager.WebApi.Controllers
         [Produces("text/plain")]
         public IActionResult UpdateUser([FromBody] FrontendUserDTO dto)
         {
-            if (dto == null)
-            {
-                return BadRequest();
-            }
-
             string result = null;
             try
             {
