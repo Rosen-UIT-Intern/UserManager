@@ -5,7 +5,7 @@ namespace UserManager.Contract.DTOs
 {
     public class FrontendUserDTO
     {
-        [Required]
+        [Required(ErrorMessage = "The Personal Id field is required")]
         public string Id { get; set; }
         [Required]
         public string FirstName { get; set; }

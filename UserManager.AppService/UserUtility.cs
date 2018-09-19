@@ -11,12 +11,17 @@ namespace UserManager.AppService
 {
     public static class UserUtility
     {
-        public static IEnumerable<UserDTO> MapToDTO(this IEnumerable<User> users)
+        public static IEnumerable<UserDTO> MapToDTOFull(this IEnumerable<User> users)
         {
-            return users.Select(user => Mapper.MapLight(user));
+            return users.Select(user => Mapper.MapFullWithoutResolvingGroupAndRole(user));
         }
 
-        public static IEnumerable<UserDTO> ResolveGroupAndRole(this IEnumerable<UserDTO> users, UserDbContext context)
+        public static IEnumerable<UserDTO> MapToDTOLight(this IEnumerable<User> users)
+        {
+            return users.Select(user => Mapper.MapOnlyMainWithoutResolvingGroupAndRole(user));
+        }
+
+        public static IEnumerable<UserDTO> ResolveGroupAndRole(this IEnumerable<UserDTO> users, UserDbContext context, bool isMainOnly = false)
         {
             return users.Select(user =>
             {
@@ -25,6 +30,9 @@ namespace UserManager.AppService
                     from gr in context.Groups.Include(g => g.Organization)
                     join usgr in context.UserGroups.Include(ug => ug.User) on gr.Id equals usgr.GroupId
                     where usgr.User.PersonalId.Equals(user.Id)
+                    //for only resolve main usergroup
+                    && (!isMainOnly //skip the next condition if isMainOnly is false
+                        || isMainOnly && usgr.IsMain)
                     select new GroupDTO
                     {
                         Id = gr.Id,
@@ -40,6 +48,9 @@ namespace UserManager.AppService
                     from role in context.Roles
                     join usrl in context.UserRoles.Include(ur => ur.User) on role.Id equals usrl.RoleId
                     where usrl.User.PersonalId.Equals(user.Id)
+                    //for only resolve main usergroup
+                    && (!isMainOnly //skip the next condition if isMainOnly is false
+                        || isMainOnly && usrl.IsMain)
                     select new RoleDTO
                     {
                         Id = role.Id,

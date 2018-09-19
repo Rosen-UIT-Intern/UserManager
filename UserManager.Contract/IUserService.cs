@@ -13,7 +13,7 @@ namespace UserManager.Contract
         /// Get all Users without resolving groups and roles
         /// </summary>
         /// <returns></returns>
-        ICollection<UserDTO> GetLightUsers();
+        ICollection<LightUserDTO> GetLightUsers();
         /// <summary>
         /// Get user with the given id
         /// </summary>
@@ -25,7 +25,7 @@ namespace UserManager.Contract
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        UserDTO GetLightUser(string id);
+        LightUserDTO GetLightUser(string id);
 
         /// <summary>
         /// Create a new user

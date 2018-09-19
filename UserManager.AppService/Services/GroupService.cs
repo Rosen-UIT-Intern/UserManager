@@ -63,8 +63,7 @@ namespace UserManager.AppService.Services
             }
 
             return groups.UserGroups.Select(usgr => usgr.User)
-                    .Select(user => Mapper.Map(user))
-                    //.MapToDTO().ResolveGroupAndRole(_context)
+                    .MapToDTOFull().ResolveGroupAndRole(_context)
                     ;
         }
     }

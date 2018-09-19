@@ -55,8 +55,7 @@ namespace UserManager.AppService.Services
             }
 
             return role.UserRoles.Select(usrl => usrl.User)
-                    .Select(user => Mapper.Map(user))
-                    //.MapToDTO().ResolveGroupAndRole(_context)
+                    .MapToDTOFull().ResolveGroupAndRole(_context)
                     ;
         }
     }

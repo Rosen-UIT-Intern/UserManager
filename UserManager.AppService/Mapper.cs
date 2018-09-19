@@ -9,7 +9,7 @@ namespace UserManager.AppService.Utility
 {
     public class Mapper
     {
-        public static UserDTO MapLight(User user)
+        public static UserDTO MapFullWithoutResolvingGroupAndRole(User user)
         {
             return new UserDTO
             {
@@ -22,6 +22,22 @@ namespace UserManager.AppService.Utility
                 WorkPhone = JsonConvert.DeserializeObject<Phone[]>(user.WorkPhone),
                 PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(user.PrivatePhone),
                 Mobile = JsonConvert.DeserializeObject<Mobile[]>(user.Mobile)
+            };
+        }
+
+        public static UserDTO MapOnlyMainWithoutResolvingGroupAndRole(User user)
+        {
+            return new UserDTO
+            {
+                Id = user.PersonalId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfileImage = user.ProfileImage,
+                Organization = Mapper.Map(user.Organization),
+                Email = JsonConvert.DeserializeObject<Email[]>(user.Email).Where(email => email.IsMain).ToArray(),
+                WorkPhone = JsonConvert.DeserializeObject<Phone[]>(user.WorkPhone).Where(phone => phone.IsMain).ToArray(),
+                PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(user.PrivatePhone).Where(phone => phone.IsMain).ToArray(),
+                Mobile = JsonConvert.DeserializeObject<Mobile[]>(user.Mobile).Where(mobile => mobile.IsMain).ToArray()
             };
         }
 

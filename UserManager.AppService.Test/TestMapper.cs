@@ -19,7 +19,7 @@ namespace UserManager.AppService.Test
             var testUser = SeedData.Instance.User;
             testUser.Organization = SeedData.Instance.RosenOrg;
 
-            var testUserDTO = Mapper.MapLight(testUser);
+            var testUserDTO = Mapper.MapFullWithoutResolvingGroupAndRole(testUser);
 
             Assert.Equal(testUser.PersonalId, testUserDTO.Id);
             Assert.Equal(testUser.FirstName, testUserDTO.FirstName);

@@ -169,7 +169,7 @@ namespace UserManager.AppService.Services
                 .FilterByRoleName(querry)
                 .FilterByName(querry)
                 .FilterById(querry)
-                .MapToDTO().ResolveGroupAndRole(_context);
+                .MapToDTOFull().ResolveGroupAndRole(_context);
         }
     }
 }

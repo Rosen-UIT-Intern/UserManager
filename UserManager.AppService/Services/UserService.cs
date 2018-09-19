@@ -24,12 +24,33 @@ namespace UserManager.AppService.Services
 
         public ICollection<UserDTO> GetUsers()
         {
-            return _context.Users.Include(u => u.Organization).MapToDTO().ResolveGroupAndRole(_context).ToList();
+            return _context.Users.Include(u => u.Organization)
+                .MapToDTOFull()
+                .ResolveGroupAndRole(_context).ToList();
         }
 
-        public ICollection<UserDTO> GetLightUsers()
+        public ICollection<LightUserDTO> GetLightUsers()
         {
-            return _context.Users.Include(u => u.Organization).MapToDTO().ToList();
+            return _context.Users.Include(u => u.Organization)
+                .MapToDTOLight()
+                .ResolveGroupAndRole(_context, isMainOnly: true)
+                .Select(u => new LightUserDTO()
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    ProfileImage = u.ProfileImage,
+
+                    Organization = u.Organization,
+
+                    MainGroup = u.Groups.FirstOrDefault(),
+                    MainRole = u.Roles.FirstOrDefault(),
+
+                    MainEmail = u.Email.FirstOrDefault(),
+                    MainWorkPhone = u.WorkPhone.FirstOrDefault(),
+                    MainPrivatePhone = u.PrivatePhone.FirstOrDefault(),
+                    MainMobile = u.Mobile.FirstOrDefault()
+                }).ToList();
         }
 
         public UserDTO GetUser(string id)
@@ -50,7 +71,6 @@ namespace UserManager.AppService.Services
                     Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile)
                 }
                 )
-                //.ToList()
                 .ResolveGroupAndRole(_context)
                 .ToList()
                 ;
@@ -63,7 +83,7 @@ namespace UserManager.AppService.Services
             return users[0];
         }
 
-        public UserDTO GetLightUser(string id)
+        public LightUserDTO GetLightUser(string id)
         {
             var users = (
                 from usr in _context.Users.Include(u => u.Organization)
@@ -74,12 +94,30 @@ namespace UserManager.AppService.Services
                     FirstName = usr.FirstName,
                     LastName = usr.LastName,
                     Organization = Mapper.Map(usr.Organization),
-                    Email = JsonConvert.DeserializeObject<Email[]>(usr.Email),
-                    WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone),
-                    PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone),
-                    Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile)
+                    Email = JsonConvert.DeserializeObject<Email[]>(usr.Email).Where(email => email.IsMain).ToArray(),
+                    WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone).Where(phone => phone.IsMain).ToArray(),
+                    PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone).Where(phone => phone.IsMain).ToArray(),
+                    Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile).Where(mobile => mobile.IsMain).ToArray()
                 }
                 )
+                .ResolveGroupAndRole(_context, isMainOnly: true)
+                .Select(u => new LightUserDTO
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    ProfileImage = u.ProfileImage,
+
+                    Organization = u.Organization,
+
+                    MainGroup = u.Groups.FirstOrDefault(),
+                    MainRole = u.Roles.FirstOrDefault(),
+
+                    MainEmail = u.Email.FirstOrDefault(),
+                    MainWorkPhone = u.WorkPhone.FirstOrDefault(),
+                    MainPrivatePhone = u.PrivatePhone.FirstOrDefault(),
+                    MainMobile = u.Mobile.FirstOrDefault()
+                })
                 .ToList()
                 ;
 
@@ -88,9 +126,7 @@ namespace UserManager.AppService.Services
                 return null;
             }
 
-            var user = users[0];
-
-            return user;
+            return users[0];
         }
 
         public string Create(FrontendUserDTO dto)
