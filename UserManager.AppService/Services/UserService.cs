@@ -271,7 +271,14 @@ namespace UserManager.AppService.Services
         public string Update(FrontendUserDTO dto)
         {
             var personalId = dto.Id;
-            var oldUser = _context.Users.Include(usr => usr.Organization).FirstOrDefault(u => u.PersonalId.Equals(personalId));
+            var oldUser = _context.Users
+                        .Include(usr => usr.Organization)
+                        .Include(usr => usr.UserGroups)
+                            .ThenInclude(usgr => usgr.Group)
+                            .ThenInclude(grp => grp.Organization)
+                        .Include(usr => usr.UserRoles)
+                            .ThenInclude(usrl => usrl.Role)
+                        .FirstOrDefault(u => u.PersonalId.Equals(personalId));
             if (oldUser == null)
             {
                 throw new KeyNotFoundException();
@@ -343,10 +350,25 @@ namespace UserManager.AppService.Services
             oldUser.PrivatePhone = JsonConvert.SerializeObject(dto.PrivatePhone);
             oldUser.Mobile = JsonConvert.SerializeObject(dto.Mobile);
 
-            oldUser.UserGroups = userGroups.ToList();
-            oldUser.UserRoles = userRoles.ToList();
+            _context.RemoveRange(oldUser.UserGroups);
+            _context.RemoveRange(oldUser.UserRoles);
+
+            _context.AddRange(userGroups.ToList());
+            _context.AddRange(userRoles.ToList());
 
             #endregion
+
+            //try
+            //{
+            //    _context.SaveChanges();
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new ArgumentException(ex.Message);
+            //}
+
+            //oldUser.UserGroups = userGroups.ToList();
+            //oldUser.UserRoles = userRoles.ToList();
 
             try
             {
