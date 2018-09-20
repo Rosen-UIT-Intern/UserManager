@@ -151,7 +151,7 @@ namespace UserManager.AppService.Services
             _context = context;
         }
 
-        public IEnumerable<UserDTO> Search(QuerryDTO querry)
+        public IEnumerable<LightUserDTO> Search(QuerryDTO querry)
         {
             return
                 _context.Users
@@ -169,7 +169,9 @@ namespace UserManager.AppService.Services
                 .FilterByRoleName(querry)
                 .FilterByName(querry)
                 .FilterById(querry)
-                .MapToDTOFull().ResolveGroupAndRole(_context);
+                .MapOnlyMainWithoutResolvingGroupAndRole()
+                .ResolveOnlyMainGroupAndRole(_context)
+                ;
         }
     }
 }

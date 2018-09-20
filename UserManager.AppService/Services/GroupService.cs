@@ -63,7 +63,7 @@ namespace UserManager.AppService.Services
             }
 
             return groups.UserGroups.Select(usgr => usgr.User)
-                    .MapToDTOFull().ResolveGroupAndRole(_context)
+                    .MapFullWithoutResolvingGroupAndRole().ResolveGroupAndRole(_context)
                     ;
         }
     }

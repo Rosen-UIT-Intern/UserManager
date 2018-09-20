@@ -25,108 +25,64 @@ namespace UserManager.AppService.Services
         public ICollection<UserDTO> GetUsers()
         {
             return _context.Users.Include(u => u.Organization)
-                .MapToDTOFull()
+                .MapFullWithoutResolvingGroupAndRole()
                 .ResolveGroupAndRole(_context).ToList();
         }
 
         public ICollection<LightUserDTO> GetLightUsers()
         {
             return _context.Users.Include(u => u.Organization)
-                .MapToDTOLight()
-                .ResolveGroupAndRole(_context, isMainOnly: true)
-                .Select(u => new LightUserDTO()
-                {
-                    Id = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    ProfileImage = u.ProfileImage,
-
-                    Organization = u.Organization,
-
-                    MainGroup = u.Groups.FirstOrDefault(),
-                    MainRole = u.Roles.FirstOrDefault(),
-
-                    MainEmail = u.Email.FirstOrDefault(),
-                    MainWorkPhone = u.WorkPhone.FirstOrDefault(),
-                    MainPrivatePhone = u.PrivatePhone.FirstOrDefault(),
-                    MainMobile = u.Mobile.FirstOrDefault()
-                }).ToList();
+                .MapOnlyMainWithoutResolvingGroupAndRole()
+                .ResolveOnlyMainGroupAndRole(_context)
+                .ToList()
+                ;
         }
 
         public UserDTO GetUser(string id)
         {
-            var users = (
-                from usr in _context.Users.Include(u => u.Organization)
-                where usr.PersonalId.Equals(id)
-                select new UserDTO
-                {
-                    Id = usr.PersonalId,
-                    FirstName = usr.FirstName,
-                    LastName = usr.LastName,
-                    ProfileImage = usr.ProfileImage,
-                    Organization = Mapper.Map(usr.Organization),
-                    Email = JsonConvert.DeserializeObject<Email[]>(usr.Email),
-                    WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone),
-                    PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone),
-                    Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile)
-                }
+            return 
+                (
+                    from usr in _context.Users.Include(u => u.Organization)
+                    where usr.PersonalId.Equals(id)
+                    select new UserDTO
+                    {
+                        Id = usr.PersonalId,
+                        FirstName = usr.FirstName,
+                        LastName = usr.LastName,
+                        ProfileImage = usr.ProfileImage,
+                        Organization = Mapper.Map(usr.Organization),
+                        Email = JsonConvert.DeserializeObject<Email[]>(usr.Email),
+                        WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone),
+                        PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone),
+                        Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile)
+                    }
                 )
                 .ResolveGroupAndRole(_context)
-                .ToList()
+                .FirstOrDefault()
                 ;
-
-            if (users.Count == 0)
-            {
-                return null;
-            }
-
-            return users[0];
         }
 
         public LightUserDTO GetLightUser(string id)
         {
-            var users = (
-                from usr in _context.Users.Include(u => u.Organization)
-                where usr.Id.Equals(id)
-                select new UserDTO
-                {
-                    Id = usr.PersonalId,
-                    FirstName = usr.FirstName,
-                    LastName = usr.LastName,
-                    Organization = Mapper.Map(usr.Organization),
-                    Email = JsonConvert.DeserializeObject<Email[]>(usr.Email).Where(email => email.IsMain).ToArray(),
-                    WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone).Where(phone => phone.IsMain).ToArray(),
-                    PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone).Where(phone => phone.IsMain).ToArray(),
-                    Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile).Where(mobile => mobile.IsMain).ToArray()
-                }
+            return 
+                (
+                    from usr in _context.Users.Include(u => u.Organization)
+                    where usr.Id.Equals(id)
+                    select new UserDTO
+                    {
+                        Id = usr.PersonalId,
+                        FirstName = usr.FirstName,
+                        LastName = usr.LastName,
+                        Organization = Mapper.Map(usr.Organization),
+                        Email = JsonConvert.DeserializeObject<Email[]>(usr.Email).Where(email => email.IsMain).ToArray(),
+                        WorkPhone = JsonConvert.DeserializeObject<Phone[]>(usr.WorkPhone).Where(phone => phone.IsMain).ToArray(),
+                        PrivatePhone = JsonConvert.DeserializeObject<Phone[]>(usr.PrivatePhone).Where(phone => phone.IsMain).ToArray(),
+                        Mobile = JsonConvert.DeserializeObject<Mobile[]>(usr.Mobile).Where(mobile => mobile.IsMain).ToArray()
+                    }
                 )
-                .ResolveGroupAndRole(_context, isMainOnly: true)
-                .Select(u => new LightUserDTO
-                {
-                    Id = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    ProfileImage = u.ProfileImage,
-
-                    Organization = u.Organization,
-
-                    MainGroup = u.Groups.FirstOrDefault(),
-                    MainRole = u.Roles.FirstOrDefault(),
-
-                    MainEmail = u.Email.FirstOrDefault(),
-                    MainWorkPhone = u.WorkPhone.FirstOrDefault(),
-                    MainPrivatePhone = u.PrivatePhone.FirstOrDefault(),
-                    MainMobile = u.Mobile.FirstOrDefault()
-                })
-                .ToList()
+                .ResolveOnlyMainGroupAndRole(_context)
+                .FirstOrDefault()
                 ;
-
-            if (users.Count == 0)
-            {
-                return null;
-            }
-
-            return users[0];
         }
 
         public string Create(FrontendUserDTO dto)

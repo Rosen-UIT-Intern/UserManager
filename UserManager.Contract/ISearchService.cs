@@ -12,6 +12,6 @@ namespace UserManager.Contract
         /// </summary>
         /// <param name="querry">the querry</param>
         /// <returns>a list of user that fit the querry</returns>
-        IEnumerable<UserDTO> Search(QuerryDTO querry);
+        IEnumerable<LightUserDTO> Search(QuerryDTO querry);
     }
 }
