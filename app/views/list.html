@@ -1,0 +1,122 @@
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-md-2 wrapper-search">
+
+        <div class="search-fixed">
+
+          <div class="wrapper-box-search-simple">
+            <div class="row">
+              <form class="wrapper-form-search col-md-12 col-xs-6 col-xs-offset-1" role="search">
+                <div class="form-group form-search">
+                  <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User"
+                    data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
+                </div>
+              </form>
+
+              <button data-bind="click: toggleVisibility" class="btn-search col-md-12 col-xs-3 col-xs-offset-1">Advanced
+                search</button>
+            </div>
+
+          </div>
+
+
+          <div data-bind="visible: isShowAdvancedSearch" class="warpper-form-search-adv">
+            <div class="form-group">
+              <label>Organization / Company</label>
+              <select data-bind="       options: availableOrganizations,
+                                                optionsText: 'name',
+                                                optionsValue: 'id',
+                                                optionsCaption: 'Choose',
+                                                value: selectedOrganization"
+                class="form-control border-input"></select>
+            </div>
+
+            <div class="form-group">
+              <label>Group / Department</label>
+              <select data-bind="       options: availableGroupsBelongOrg,
+                                                optionsText: 'name',
+                                                optionsValue: 'name',
+                                                optionsCaption: 'Choose',
+                                                value: selectedGroup"
+                class="form-control border-input"></select>
+            </div>
+
+            <div class="form-group">
+              <label>Role / Job Title</label>
+              <select data-bind="       options: availableRoles,
+                                                optionsText: 'name',
+                                                optionsValue: 'name',
+                                                optionsCaption: 'Choose',
+                                                value: selectedRole"
+                class="form-control border-input"></select>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <!-- <p id="message" data-bind="visible: displayMess">Don't have any user to
+        show.<br />Please press Add on the left to add user.</p> -->
+
+      <div class="col-xs-12 col-md-10 col-md-offset-2 content-items">
+        <div class="row wrapper-profile" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+
+          <div class="col-sm-4 col-xs-6 col-lg-3">
+            <div class="ih-item circle effect5" title="Click here to view detail">
+              <a data-bind="click: $root.viewProfile">
+                <div class="img"><img data-bind="attr:{src: profileImage}" src="" alt="User Pic"></div>
+                <div class="info">
+                  <div class="info-back">
+                    <h3 data-bind="text: firstName + ' ' + lastName"></h3>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="user-bottom">
+              <ul>
+                <li><strong data-bind="text: firstName + ' ' + lastName"></strong></li><br />
+                <li data-bind="text: organization.name"></li><br />
+                <li data-bind="text: mainRole.name"></li><br />
+                <li data-bind="text: mainGroup.name"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- End -->
+    </div>
+  </div>
+
+
+</section>
+
+
+
+<!-- 
+
+<div class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+          
+    <div class="col-md-4 col-sm-4 col-xs-4">
+      <div class="ih-item circle effect5" title="Click here to view detail">
+        <a data-bind="click: $root.viewProfile">
+          <div class="img"><img data-bind="attr:{src: profileImage}" src="" alt="User Pic"></div>
+          <div class="info">
+            <div class="info-back">
+              <h3 data-bind="text: firstName + ' ' + lastName"></h3>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="user-bottom">
+        <ul>
+          <li><strong data-bind="text: firstName + ' ' + lastName"></strong></li><br />
+          <li data-bind="text: organization.name"></li><br />
+          <li data-bind="text: mainRole.name"></li><br />
+          <li data-bind="text: mainGroup.name"></li>
+        </ul>
+      </div>
+    </div>
+  </div>  -->
