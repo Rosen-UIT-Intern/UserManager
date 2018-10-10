@@ -71,7 +71,7 @@ namespace UserManager.WebApi.Controllers
             {
                 return BadRequest(aex.Message);
             }
-            catch (KeyNotFoundException knfex)
+            catch (KeyNotFoundException)
             {
                 return NotFound(dto.Id);
             }

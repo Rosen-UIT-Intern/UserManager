@@ -40,7 +40,7 @@ namespace UserManager.AppService.Services
 
         public UserDTO GetUser(string id)
         {
-            return 
+            return
                 (
                     from usr in _context.Users.Include(u => u.Organization)
                     where usr.PersonalId.Equals(id)
@@ -64,7 +64,7 @@ namespace UserManager.AppService.Services
 
         public LightUserDTO GetLightUser(string id)
         {
-            return 
+            return
                 (
                     from usr in _context.Users.Include(u => u.Organization)
                     where usr.Id.Equals(id)
@@ -127,7 +127,7 @@ namespace UserManager.AppService.Services
             {
                 dto.Groups.Single(grDTO => grDTO.IsMain);
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 throw new ArgumentException("one and only one main group must exist");
             }
@@ -137,7 +137,7 @@ namespace UserManager.AppService.Services
             {
                 dto.Roles.Single(rlDTO => rlDTO.IsMain);
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 throw new ArgumentException("one and only one main role must exist");
             }
@@ -254,7 +254,7 @@ namespace UserManager.AppService.Services
             {
                 dto.Groups.Single(grDTO => grDTO.IsMain);
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 throw new ArgumentException("one and only one main group must exist");
             }
@@ -264,7 +264,7 @@ namespace UserManager.AppService.Services
             {
                 dto.Roles.Single(rlDTO => rlDTO.IsMain);
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 throw new ArgumentException("one and only one main role must exist");
             }
@@ -359,7 +359,7 @@ namespace UserManager.AppService.Services
 
                 _context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //todo logging
                 return false;
